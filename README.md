@@ -94,3 +94,36 @@ Data / Time
 
 Affine units such as absolute Celsius are explicitly distinguished from
 linear difference units.
+
+## Semantic Coherence
+
+Veridic independently derives and cross-checks semantic properties.
+
+```text
+Field Algebra
+    ->
+Type
+
+Unit Algebra
+    ->
+Unit
+
+Dimension Algebra
+    ->
+Dimension
+
+Measurement Semantics
+    ->
+Scale
+
+        |
+        v
+
+Semantic Contract
+
+        |
+        v
+
+TRUE | FALSE | UNKNOWN```
+A Field claiming DataRate with dimension Length / Time is rejected
+even if its underlying values are numerically computable.

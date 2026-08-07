@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .contracts import DEFAULT_CONTRACT_REGISTRY
 from .dimensions import SemanticDimension as D
 from .field import Field
 from .operator import OperatorRule
@@ -219,7 +220,9 @@ def _packet_rate_transfer(
 
 
 def build_runtime() -> SemanticRuntime:
-    runtime = SemanticRuntime()
+    runtime = SemanticRuntime(
+        contracts=DEFAULT_CONTRACT_REGISTRY,
+    )
 
     runtime.register(
         OperatorRule(

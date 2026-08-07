@@ -11,6 +11,7 @@ The purpose is to ask:
 
 from __future__ import annotations
 
+from .contracts import DEFAULT_CONTRACT_REGISTRY
 from .dimensions import SemanticDimension as D
 from .domain_law import DomainLaw
 from .field import Field
@@ -448,7 +449,9 @@ DOMAIN_LAWS = (
 def build_domain_runtime() -> SemanticRuntime:
     """Build a runtime from independently motivated domain laws."""
 
-    runtime = SemanticRuntime()
+    runtime = SemanticRuntime(
+        contracts=DEFAULT_CONTRACT_REGISTRY,
+    )
 
     for law in DOMAIN_LAWS:
         runtime.register(law.as_operator_rule())

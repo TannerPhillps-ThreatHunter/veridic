@@ -3,6 +3,14 @@
 Experimental field-aware semantic DataFrame research runtime.
 """
 
+from .contracts import (
+    DEFAULT_CONTRACT_REGISTRY,
+    ContractEvaluation,
+    ContractRegistry,
+    ContractViolation,
+    SemanticContract,
+    UnitPolicy,
+)
 from .dimensions import SemanticDimension
 from .domain_law import DomainLaw
 from .domain_laws import DOMAIN_LAWS, build_domain_runtime
@@ -37,6 +45,12 @@ from .validation import (
 from .vocabulary import Operation, Scale, ValidityLevel
 
 __all__ = [
+    "UnitPolicy",
+    "SemanticContract",
+    "ContractViolation",
+    "ContractRegistry",
+    "ContractEvaluation",
+    "DEFAULT_CONTRACT_REGISTRY",
     "DEFAULT_CLASSIFICATION_REGISTRY",
     "DOMAIN_LAWS",
     "Admission",
