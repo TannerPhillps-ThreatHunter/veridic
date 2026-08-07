@@ -65,3 +65,32 @@ Semantic Validity
 Contextual Validity
 
 See docs/theory/semantic-dataframe.md.
+
+## Native Dimensions and Units
+
+Veridic implements its own dependency-free dimensional and unit algebra.
+
+```text
+Dimension
+    |
+    +-- Time
+    +-- Length
+    +-- Mass
+    +-- Temperature
+    +-- Data
+    +-- Count
+    +-- Angle
+
+Unit
+    |
+    +-- Dimension
+    +-- Scale
+    +-- Offset```
+Compound units are derived algebraically:
+
+byte / second
+    ->
+Data / Time
+
+Affine units such as absolute Celsius are explicitly distinguished from
+linear difference units.

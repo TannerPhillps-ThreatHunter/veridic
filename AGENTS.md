@@ -140,3 +140,26 @@ The current planned utility architecture is:
 The project should implement only the portions of these domains required
 by Veridic's semantic computation model rather than cloning general-purpose
 third-party libraries.
+
+## Native Measurement Doctrine
+
+Veridic owns its dimensional and unit semantics.
+
+Do not introduce external unit or dimensional-analysis libraries.
+
+The distinction is:
+
+    Field
+        meaning
+
+    Dimension
+        algebraic quantity structure
+
+    Unit
+        magnitude representation and conversion
+
+Affine units must not silently participate in multiplicative unit
+algebra.
+
+Absolute quantities and differences must remain distinguishable where
+their algebra differs.
