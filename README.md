@@ -175,3 +175,22 @@ Warrant = Assertion | Derivation
 
 A Proposition may exist without being accepted as Knowledge, and the
 same Proposition may possess multiple independent warrants.
+
+## Truth and Epistemic Support
+
+Veridic does not treat contradictory warrants as a fourth truth value.
+
+```text
+Truth
+    TRUE
+    FALSE
+    UNKNOWN
+
+Support
+    NEITHER
+    FOR
+    AGAINST
+    BOTH```
+BOTH means that active warranted Knowledge exists for both a
+Proposition and its negation. It represents epistemic contest, not a
+declaration that the Proposition is objectively both true and false.

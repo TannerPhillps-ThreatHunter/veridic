@@ -33,6 +33,7 @@ from .knowledge import (
     Provenance,
 )
 from .runtime import SemanticRuntime
+from .support import EpistemicSupport
 from .vocabulary import Operation
 
 
@@ -381,6 +382,47 @@ class KnowledgeBase:
                     item.identity
                 ),
             )
+        )
+
+    def support(
+        self,
+        proposition: Proposition,
+        *,
+        active_only: bool = True,
+    ) -> EpistemicSupport:
+        """Return warranted support for and against a Proposition.
+
+        Positive support consists of Knowledge warranting P.
+
+        Negative support consists of Knowledge warranting NOT P.
+
+        The two sets remain independent.
+        """
+
+        from .information import negate
+
+        positive = self.warrants_for(
+            proposition,
+            active_only=active_only,
+        )
+
+        negative = self.warrants_for(
+            negate(proposition),
+            active_only=active_only,
+        )
+
+        return EpistemicSupport(
+            proposition=proposition,
+            for_knowledge=tuple(
+                knowledge.identity
+                for knowledge
+                in positive
+            ),
+            against_knowledge=tuple(
+                knowledge.identity
+                for knowledge
+                in negative
+            ),
         )
 
     def direct_dependents(
