@@ -309,18 +309,16 @@ def test_invalidation_stales_downstream_without_changing_warrant():
     )
 
     assert (
-        base.get(
-            "K:start",
-            require_active=False,
-        ).state
+        base.state(
+            "K:start"
+        )
         is KnowledgeState.INVALID
     )
 
     assert (
-        base.get(
-            "K:duration",
-            require_active=False,
-        ).state
+        base.state(
+            "K:duration"
+        )
         is KnowledgeState.STALE
     )
 

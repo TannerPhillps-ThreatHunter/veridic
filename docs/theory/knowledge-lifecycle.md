@@ -135,14 +135,32 @@ without changing the underlying warrants.
 
 ---
 
-# Remaining Limitation
+# Phase 17 Upgrade
 
-The current stores still mutate lifecycle state in place.
+The canonical Proposition-based KnowledgeBase now separates Knowledge
+content from lifecycle history.
 
-The distinction between ACTIVE, STALE, INVALID, and RETRACTED now has
-computational force, but historical state transitions themselves are
-not yet first-class immutable records.
+Knowledge contains:
 
-That is a separate upgrade problem.
+    identity
+    proposition
+    warrant
 
-Phase 16 does not solve it.
+Lifecycle is represented independently as append-only transitions:
+
+    KnowledgeTransition {
+        sequence
+        knowledge
+        from_state
+        to_state
+        reason
+        cause
+    }
+
+Current state is derived from the final transition.
+
+Historical transitions remain available without rewriting the Knowledge
+item itself.
+
+The earlier KnownValue KnowledgeStore remains preserved as experimental
+lineage and still uses its original state-storage mechanism.

@@ -257,3 +257,17 @@ Veridic distinguishes currentness from invalidity.
 If a premise is invalidated or retracted, downstream Derivations become
 STALE rather than INVALID. Their historical warrants remain intact, but
 they no longer contribute active epistemic Support.
+
+## Immutable Knowledge Lifecycle
+
+Canonical Knowledge no longer stores mutable lifecycle state.
+
+    Knowledge = Proposition + Warrant
+
+Lifecycle is append-only:
+
+    ACTIVE -> STALE
+    ACTIVE -> INVALID
+    ACTIVE -> RETRACTED
+
+Current state is derived from immutable KnowledgeTransition history.

@@ -23,10 +23,10 @@ This layer intentionally sits above FieldValue.
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from enum import Enum
 from typing import TypeAlias
 
 from .execution import execute
+from .lifecycle import KnowledgeState
 from .field import FieldValue
 from .runtime import SemanticRuntime
 from .vocabulary import Operation
@@ -50,13 +50,6 @@ class InvalidKnowledge(KnowledgeError):
 
 class InvalidRevision(KnowledgeError):
     """A requested knowledge revision is not epistemically valid."""
-
-
-class KnowledgeState(str, Enum):
-    ACTIVE = "active"
-    STALE = "stale"
-    INVALID = "invalid"
-    RETRACTED = "retracted"
 
 
 @dataclass(frozen=True, slots=True)

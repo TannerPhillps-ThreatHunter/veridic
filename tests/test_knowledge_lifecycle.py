@@ -181,18 +181,16 @@ def test_direct_invalidation_invalidates_target_only():
     )
 
     assert (
-        base.get(
-            "K:end",
-            require_active=False,
-        ).state
+        base.state(
+            "K:end"
+        )
         is KnowledgeState.INVALID
     )
 
     assert (
-        base.get(
-            "K:duration",
-            require_active=False,
-        ).state
+        base.state(
+            "K:duration"
+        )
         is KnowledgeState.STALE
     )
 
@@ -205,18 +203,16 @@ def test_retraction_stales_downstream_derivation():
     )
 
     assert (
-        base.get(
-            "K:end",
-            require_active=False,
-        ).state
+        base.state(
+            "K:end"
+        )
         is KnowledgeState.RETRACTED
     )
 
     assert (
-        base.get(
-            "K:duration",
-            require_active=False,
-        ).state
+        base.state(
+            "K:duration"
+        )
         is KnowledgeState.STALE
     )
 
@@ -247,7 +243,9 @@ def test_stale_derivation_retains_original_warrant():
     )
 
     assert (
-        after.state
+        base.state(
+            "K:duration"
+        )
         is KnowledgeState.STALE
     )
 

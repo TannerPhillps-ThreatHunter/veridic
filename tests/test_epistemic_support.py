@@ -306,10 +306,9 @@ def test_retracted_negative_warrant_resolves_active_contest():
     )
 
     assert (
-        base.get(
-            "K:negative",
-            require_active=False,
-        ).state
+        base.state(
+            "K:negative"
+        )
         is KnowledgeState.RETRACTED
     )
 

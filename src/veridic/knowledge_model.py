@@ -17,7 +17,7 @@ deleting that experimental lineage.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import TypeAlias
 
 from .execution import execute
@@ -32,9 +32,10 @@ from .lineage import (
     SupportLineage,
     WarrantLineage,
 )
-from .knowledge import (
+from .knowledge import Provenance
+from .lifecycle import (
     KnowledgeState,
-    Provenance,
+    KnowledgeTransition,
 )
 from .runtime import SemanticRuntime
 from .support import EpistemicSupport
@@ -105,9 +106,6 @@ class Knowledge:
     identity: str
     proposition: Proposition
     warrant: Warrant
-    state: KnowledgeState = (
-        KnowledgeState.ACTIVE
-    )
 
     @property
     def asserted(self) -> bool:
@@ -152,6 +150,13 @@ class KnowledgeBase:
             Knowledge,
         ] = {}
 
+        self._transitions: dict[
+            str,
+            list[KnowledgeTransition],
+        ] = {}
+
+        self._transition_sequence = 0
+
         self._dependents: dict[
             str,
             set[str],
@@ -172,6 +177,90 @@ class KnowledgeBase:
                 identity
             )
 
+    def _record_transition(
+        self,
+        identity: str,
+        to_state: KnowledgeState,
+        *,
+        reason: str,
+        cause: str | None = None,
+    ) -> KnowledgeTransition:
+        if identity not in self._items:
+            raise UnknownKnowledge(
+                identity
+            )
+
+        history = self._transitions.setdefault(
+            identity,
+            [],
+        )
+
+        from_state = (
+            history[-1].to_state
+            if history
+            else None
+        )
+
+        if from_state is to_state:
+            return history[-1]
+
+        self._transition_sequence += 1
+
+        transition = KnowledgeTransition(
+            sequence=self._transition_sequence,
+            knowledge=identity,
+            from_state=from_state,
+            to_state=to_state,
+            reason=reason,
+            cause=cause,
+        )
+
+        history.append(
+            transition
+        )
+
+        return transition
+
+    def state(
+        self,
+        identity: str,
+    ) -> KnowledgeState:
+        if identity not in self._items:
+            raise UnknownKnowledge(
+                identity
+            )
+
+        history = self._transitions.get(
+            identity,
+            [],
+        )
+
+        if not history:
+            raise KnowledgeModelError(
+                f"{identity}: no lifecycle history"
+            )
+
+        return history[-1].to_state
+
+    def history(
+        self,
+        identity: str,
+    ) -> tuple[
+        KnowledgeTransition,
+        ...,
+    ]:
+        if identity not in self._items:
+            raise UnknownKnowledge(
+                identity
+            )
+
+        return tuple(
+            self._transitions.get(
+                identity,
+                [],
+            )
+        )
+
     def get(
         self,
         identity: str,
@@ -187,14 +276,18 @@ class KnowledgeBase:
                 identity
             ) from exc
 
+        current_state = self.state(
+            identity
+        )
+
         if (
             require_active
-            and knowledge.state
+            and current_state
             is not KnowledgeState.ACTIVE
         ):
             raise InactiveKnowledge(
                 f"{identity}: "
-                f"{knowledge.state.value}"
+                f"{current_state.value}"
             )
 
         return knowledge
@@ -221,6 +314,12 @@ class KnowledgeBase:
         self._items[
             identity
         ] = knowledge
+
+        self._record_transition(
+            identity,
+            KnowledgeState.ACTIVE,
+            reason="created",
+        )
 
         self._dependents.setdefault(
             identity,
@@ -336,6 +435,12 @@ class KnowledgeBase:
             identity
         ] = knowledge
 
+        self._record_transition(
+            identity,
+            KnowledgeState.ACTIVE,
+            reason="created",
+        )
+
         self._dependents.setdefault(
             identity,
             set(),
@@ -370,7 +475,9 @@ class KnowledgeBase:
 
             if (
                 active_only
-                and knowledge.state
+                and self.state(
+                    knowledge.identity
+                )
                 is not KnowledgeState.ACTIVE
             ):
                 continue
@@ -618,90 +725,85 @@ class KnowledgeBase:
     def _stale_dependents(
         self,
         identity: str,
+        *,
+        reason: str,
     ) -> None:
-        """Mark downstream Knowledge stale.
-
-        Staleness means the warrant remains historically well-formed,
-        but the Knowledge is no longer currently supported because one
-        of its premises ceased to be active.
-        """
+        """Record downstream Knowledge becoming stale."""
 
         for dependent in self.dependents(
             identity
         ):
-            knowledge = self._items[
-                dependent
-            ]
-
             if (
-                knowledge.state
+                self.state(
+                    dependent
+                )
                 is KnowledgeState.ACTIVE
             ):
-                self._items[
-                    dependent
-                ] = replace(
-                    knowledge,
-                    state=KnowledgeState.STALE,
+                self._record_transition(
+                    dependent,
+                    KnowledgeState.STALE,
+                    reason=reason,
+                    cause=identity,
                 )
 
     def invalidate(
         self,
         identity: str,
     ) -> None:
-        """Declare one Knowledge item invalid.
+        """Declare one Knowledge item invalid."""
 
-        Invalidity applies to the target itself.
-
-        Downstream Derivations become STALE because their warrants
-        remain historically well-formed but no longer have an active
-        premise.
-        """
-
-        knowledge = self.get(
+        self.get(
             identity,
             require_active=False,
         )
 
+        current_state = self.state(
+            identity
+        )
+
         if (
-            knowledge.state
+            current_state
             is not KnowledgeState.RETRACTED
+            and current_state
+            is not KnowledgeState.INVALID
         ):
-            self._items[
-                identity
-            ] = replace(
-                knowledge,
-                state=KnowledgeState.INVALID,
+            self._record_transition(
+                identity,
+                KnowledgeState.INVALID,
+                reason="invalidated",
             )
 
         self._stale_dependents(
-            identity
+            identity,
+            reason="premise-invalidated",
         )
 
     def retract(
         self,
         identity: str,
     ) -> None:
-        """Explicitly withdraw one Knowledge item.
+        """Explicitly withdraw one Knowledge item."""
 
-        Retraction changes the target to RETRACTED.
-
-        Downstream Derivations become STALE rather than INVALID.
-        """
-
-        knowledge = self.get(
+        self.get(
             identity,
             require_active=False,
         )
 
-        self._items[
-            identity
-        ] = replace(
-            knowledge,
-            state=KnowledgeState.RETRACTED,
-        )
+        if (
+            self.state(
+                identity
+            )
+            is not KnowledgeState.RETRACTED
+        ):
+            self._record_transition(
+                identity,
+                KnowledgeState.RETRACTED,
+                reason="retracted",
+            )
 
         self._stale_dependents(
-            identity
+            identity,
+            reason="premise-retracted",
         )
 
     def explain(
@@ -723,7 +825,9 @@ class KnowledgeBase:
             ),
             (
                 "state: "
-                + knowledge.state.value
+                + self.state(
+                    identity
+                ).value
             ),
         ]
 
