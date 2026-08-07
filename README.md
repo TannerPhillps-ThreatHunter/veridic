@@ -194,3 +194,21 @@ Support
 BOTH means that active warranted Knowledge exists for both a
 Proposition and its negation. It represents epistemic contest, not a
 declaration that the Proposition is objectively both true and false.
+
+## Warrant Lineage
+
+Veridic distinguishes the number of warrants from the number of
+assertion-lineage groups supporting a Proposition.
+
+```text
+K1 = ASSERT P
+K2 = DERIVE P FROM K1
+K3 = DERIVE P FROM K1
+
+warrant count  = 3
+lineage count  = 1```
+Derivation can create additional warranted Knowledge without creating a
+new epistemic root.
+
+Lineage independence is intentionally narrower than source or causal
+independence.

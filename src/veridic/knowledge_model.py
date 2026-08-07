@@ -28,6 +28,10 @@ from .information import (
     format_proposition,
     value_statement,
 )
+from .lineage import (
+    SupportLineage,
+    WarrantLineage,
+)
 from .knowledge import (
     KnowledgeState,
     Provenance,
@@ -420,6 +424,133 @@ class KnowledgeBase:
             ),
             against_knowledge=tuple(
                 knowledge.identity
+                for knowledge
+                in negative
+            ),
+        )
+
+    def assertion_roots(
+        self,
+        identity: str,
+    ) -> tuple[str, ...]:
+        """Return the asserted roots supporting one Knowledge item.
+
+        A directly asserted Knowledge item is its own root.
+
+        A derived Knowledge item recursively inherits the roots of its
+        premises.
+
+        The result describes epistemic ancestry, not source
+        independence.
+        """
+
+        roots: set[str] = set()
+        visiting: set[str] = set()
+        visited: set[str] = set()
+
+        def walk(
+            current: str,
+        ) -> None:
+            if current in visited:
+                return
+
+            if current in visiting:
+                raise KnowledgeModelError(
+                    "Cyclic derivation lineage detected: "
+                    f"{current}"
+                )
+
+            knowledge = self.get(
+                current,
+                require_active=False,
+            )
+
+            if isinstance(
+                knowledge.warrant,
+                AssertionWarrant,
+            ):
+                roots.add(
+                    current
+                )
+
+                visited.add(
+                    current
+                )
+
+                return
+
+            visiting.add(
+                current
+            )
+
+            for premise in (
+                knowledge.warrant.premises
+            ):
+                walk(
+                    premise
+                )
+
+            visiting.remove(
+                current
+            )
+
+            visited.add(
+                current
+            )
+
+        walk(
+            identity
+        )
+
+        return tuple(
+            sorted(
+                roots
+            )
+        )
+
+    def support_lineage(
+        self,
+        proposition: Proposition,
+        *,
+        active_only: bool = True,
+    ) -> SupportLineage:
+        """Analyze assertion-root ancestry around a Proposition."""
+
+        from .information import negate
+
+        positive = self.warrants_for(
+            proposition,
+            active_only=active_only,
+        )
+
+        negative = self.warrants_for(
+            negate(proposition),
+            active_only=active_only,
+        )
+
+        return SupportLineage(
+            proposition=proposition,
+            for_lineages=tuple(
+                WarrantLineage(
+                    knowledge=knowledge.identity,
+                    assertion_roots=(
+                        self.assertion_roots(
+                            knowledge.identity
+                        )
+                    ),
+                )
+                for knowledge
+                in positive
+            ),
+            against_lineages=tuple(
+                WarrantLineage(
+                    knowledge=knowledge.identity,
+                    assertion_roots=(
+                        self.assertion_roots(
+                            knowledge.identity
+                        )
+                    ),
+                )
                 for knowledge
                 in negative
             ),
