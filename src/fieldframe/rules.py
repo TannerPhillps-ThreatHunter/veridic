@@ -2,12 +2,28 @@
 
 from __future__ import annotations
 
+from .dimensions import SemanticDimension as D
 from .field import Field
 from .operator import OperatorRule
 from .relations import Relation, supports
 from .runtime import SemanticRuntime
 from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
 from .vocabulary import Operation, Scale
+
+CLASSIFICATION = frozenset(
+    {
+        D.CATEGORY,
+        D.KIND,
+        D.TYPE,
+    }
+)
+
+MEASUREMENT = frozenset(
+    {
+        D.SCALE,
+        D.UNIT,
+    }
+)
 
 
 def _same_semantic_type(fields: tuple[Field, ...]) -> bool:
@@ -28,7 +44,10 @@ def _equality(fields: tuple[Field, ...]) -> bool:
     return (
         len(fields) == 2
         and _same_semantic_type(fields)
-        and all(supports(f.scale, Relation.EQUALITY) for f in fields)
+        and all(
+            supports(field.scale, Relation.EQUALITY)
+            for field in fields
+        )
     )
 
 
@@ -36,7 +55,10 @@ def _ordering(fields: tuple[Field, ...]) -> bool:
     return (
         len(fields) == 2
         and _same_semantic_type(fields)
-        and all(supports(f.scale, Relation.ORDER) for f in fields)
+        and all(
+            supports(field.scale, Relation.ORDER)
+            for field in fields
+        )
     )
 
 
@@ -56,7 +78,9 @@ def _timestamp_difference(fields: tuple[Field, ...]) -> bool:
     )
 
 
-def _timestamp_difference_transfer(fields: tuple[Field, ...]) -> Field:
+def _timestamp_difference_transfer(
+    fields: tuple[Field, ...],
+) -> Field:
     lhs, rhs = fields
 
     return Field(
@@ -87,7 +111,9 @@ def _duration_addition(fields: tuple[Field, ...]) -> bool:
     )
 
 
-def _duration_addition_transfer(fields: tuple[Field, ...]) -> Field:
+def _duration_addition_transfer(
+    fields: tuple[Field, ...],
+) -> Field:
     lhs, rhs = fields
 
     return Field(
@@ -121,7 +147,9 @@ def _byte_rate(fields: tuple[Field, ...]) -> bool:
     )
 
 
-def _byte_rate_transfer(fields: tuple[Field, ...]) -> Field:
+def _byte_rate_transfer(
+    fields: tuple[Field, ...],
+) -> Field:
     lhs, rhs = fields
 
     return Field(
@@ -155,7 +183,9 @@ def _packet_rate(fields: tuple[Field, ...]) -> bool:
     )
 
 
-def _packet_rate_transfer(fields: tuple[Field, ...]) -> Field:
+def _packet_rate_transfer(
+    fields: tuple[Field, ...],
+) -> Field:
     lhs, rhs = fields
 
     return Field(
@@ -180,6 +210,8 @@ def build_runtime() -> SemanticRuntime:
             operation=Operation.EQ,
             arity=2,
             admit=_equality,
+            depends_on=CLASSIFICATION
+            | frozenset({D.SCALE}),
         )
     )
 
@@ -195,6 +227,8 @@ def build_runtime() -> SemanticRuntime:
                 operation=operation,
                 arity=2,
                 admit=_ordering,
+                depends_on=CLASSIFICATION
+                | frozenset({D.SCALE}),
             )
         )
 
@@ -205,6 +239,7 @@ def build_runtime() -> SemanticRuntime:
             arity=2,
             admit=_timestamp_difference,
             transfer=_timestamp_difference_transfer,
+            depends_on=CLASSIFICATION | MEASUREMENT,
         )
     )
 
@@ -215,6 +250,7 @@ def build_runtime() -> SemanticRuntime:
             arity=2,
             admit=_duration_addition,
             transfer=_duration_addition_transfer,
+            depends_on=CLASSIFICATION | MEASUREMENT,
         )
     )
 
@@ -225,6 +261,7 @@ def build_runtime() -> SemanticRuntime:
             arity=2,
             admit=_byte_rate,
             transfer=_byte_rate_transfer,
+            depends_on=CLASSIFICATION | MEASUREMENT,
         )
     )
 
@@ -235,6 +272,7 @@ def build_runtime() -> SemanticRuntime:
             arity=2,
             admit=_packet_rate,
             transfer=_packet_rate_transfer,
+            depends_on=CLASSIFICATION | MEASUREMENT,
         )
     )
 

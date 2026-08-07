@@ -3,6 +3,7 @@
 Experimental field-aware semantic DataFrame research runtime.
 """
 
+from .dimensions import SemanticDimension
 from .errors import (
     FieldFrameError,
     InvariantViolation,
@@ -40,6 +41,7 @@ __all__ = [
     "InvariantViolation",
     "Operation",
     "Scale",
+    "SemanticDimension",
     "SemanticError",
     "SemanticRuntime",
     "UndefinedOperation",

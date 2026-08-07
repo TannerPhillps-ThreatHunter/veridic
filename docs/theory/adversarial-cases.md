@@ -97,3 +97,30 @@ The next adversarial question is computational:
 
 If Category, Kind, or Type never independently affects computation,
 that tier may be descriptive rather than computational.
+
+---
+
+# Phase 3 — Computational Force
+
+A semantic dimension is considered computationally relevant when a
+controlled change to that dimension changes:
+
+- admission;
+- rule selection; or
+- output Field semantics.
+
+Controlled experiments now test Category, Kind, and Type independently.
+
+This is evidence that the hierarchy CAN affect computation.
+
+It is not yet evidence that the current taxonomy SHOULD be universal.
+
+Major threat to validity:
+
+    The rules were authored using the hierarchy.
+
+Therefore the experiment can establish internal consistency but cannot
+by itself establish that the hierarchy is necessary.
+
+The stronger validation must come from independently derived domain
+semantics.

@@ -35,6 +35,12 @@ class SemanticRuntime:
     def register(self, rule: OperatorRule) -> None:
         self._rules.append(rule)
 
+    @property
+    def rules(self) -> tuple[OperatorRule, ...]:
+        """Registered semantic rules in resolution order."""
+
+        return tuple(self._rules)
+
     def resolve(
         self,
         operation: Operation,
