@@ -232,3 +232,15 @@ Interpretation.
 
 Neither represented Information nor epistemic Support is silently
 promoted to Truth.
+
+## Reduced Value Information
+
+The Information layer no longer duplicates Field semantics inside a
+second SemanticValue object.
+
+    HAS_VALUE(Field, Datum)
+
+Field carries semantic position and Datum carries represented content.
+
+This is an executable reduction, not yet the final Domain-based Value
+model.

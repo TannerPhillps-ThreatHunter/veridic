@@ -26,8 +26,6 @@ from enum import Enum
 from typing import Any, TypeAlias
 
 from .field import Field, FieldValue
-from .utilities.units import Unit
-from .vocabulary import Scale
 
 
 class InformationError(RuntimeError):
@@ -40,37 +38,6 @@ class ArityError(InformationError):
 
 class NotValueProposition(InformationError):
     """A Proposition does not encode a Field value statement."""
-
-
-@dataclass(frozen=True, slots=True)
-class SemanticValue:
-    """Intrinsic semantic content of a FieldValue.
-
-    Role and contextual Field identity are intentionally excluded.
-
-    The Field identifies where the value occurs.
-
-    SemanticValue identifies what value occurs there.
-    """
-
-    classification_path: str
-    scale: Scale
-    unit: Unit | None
-    datum: Any
-
-    @classmethod
-    def from_field_value(
-        cls,
-        value: FieldValue,
-    ) -> SemanticValue:
-        return cls(
-            classification_path=(
-                value.field.classification_path
-            ),
-            scale=value.field.scale,
-            unit=value.field.unit,
-            datum=value.value,
-        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -165,13 +132,18 @@ HAS_VALUE = InformationRelation(
 def value_statement(
     value: FieldValue,
 ) -> AtomicProposition:
-    """Construct Information from one instantiated Field value."""
+    """Construct Information from one instantiated Field value.
+
+    Field carries the semantic position.
+
+    Datum carries represented content.
+
+    No duplicate semantic signature is embedded in the Proposition.
+    """
 
     return HAS_VALUE(
         value.field,
-        SemanticValue.from_field_value(
-            value
-        ),
+        value.value,
     )
 
 
@@ -193,9 +165,7 @@ def field_value_from(
             "Proposition relation is not HAS_VALUE"
         )
 
-    field, semantic_value = (
-        proposition.terms
-    )
+    field, datum = proposition.terms
 
     if not isinstance(
         field,
@@ -205,34 +175,9 @@ def field_value_from(
             "HAS_VALUE subject must be a Field"
         )
 
-    if not isinstance(
-        semantic_value,
-        SemanticValue,
-    ):
-        raise NotValueProposition(
-            "HAS_VALUE object must be SemanticValue"
-        )
-
-    expected = (
-        field.classification_path,
-        field.scale,
-        field.unit,
-    )
-
-    actual = (
-        semantic_value.classification_path,
-        semantic_value.scale,
-        semantic_value.unit,
-    )
-
-    if expected != actual:
-        raise NotValueProposition(
-            "SemanticValue contradicts Field semantics"
-        )
-
     return FieldValue(
         field=field,
-        value=semantic_value.datum,
+        value=datum,
     )
 
 
@@ -388,29 +333,24 @@ def format_proposition(
         AtomicProposition,
     ):
         if proposition.relation == HAS_VALUE:
-            field, value = proposition.terms
+            field, datum = proposition.terms
 
             assert isinstance(
                 field,
                 Field,
             )
 
-            assert isinstance(
-                value,
-                SemanticValue,
-            )
-
             suffix = ""
 
-            if value.unit is not None:
+            if field.unit is not None:
                 suffix = (
                     " "
-                    + value.unit.symbol
+                    + field.unit.symbol
                 )
 
             return (
                 f"{field.name} = "
-                f"{value.datum}"
+                f"{datum}"
                 f"{suffix}"
             )
 
@@ -468,7 +408,6 @@ __all__ = [
     "LogicalProposition",
     "NotValueProposition",
     "Proposition",
-    "SemanticValue",
     "conjunction",
     "disjunction",
     "field_value_from",
