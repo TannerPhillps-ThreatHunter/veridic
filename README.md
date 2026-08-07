@@ -127,3 +127,26 @@ Semantic Contract
 TRUE | FALSE | UNKNOWN```
 A Field claiming DataRate with dimension Length / Time is rejected
 even if its underlying values are numerically computable.
+
+## Assertion and Derivation
+
+Veridic distinguishes knowledge introduced into a computation from
+knowledge established by computation.
+
+```text
+Assertion
+    |
+    v
+KnownValue
+    |
+    v
+Semantic Operation
+    |
+    v
+Derivation```
+An asserted and derived value may have identical Field semantics and
+datum while remaining epistemically distinct.
+
+Derived values retain their dependencies and governing semantic rule,
+allowing Veridic to explain why they exist and invalidate them when
+their premises change.
