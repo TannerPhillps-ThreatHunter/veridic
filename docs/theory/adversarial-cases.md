@@ -124,3 +124,47 @@ by itself establish that the hierarchy is necessary.
 
 The stronger validation must come from independently derived domain
 semantics.
+
+---
+
+# Phase 4 — Independent Domain Laws
+
+Synthetic tier experiments are no longer the primary evidence.
+
+Real-domain operation laws now cover:
+
+    Temporal
+    Physical
+    Spatial
+    Identity
+    Network quantities
+
+Current independent dimension usage:
+
+    Category    used
+    Kind        used
+    Type        used
+    Scale       used
+    Unit        used
+    Role        used
+
+The projected-coordinate experiment provides the first natural
+controlled case for Role:
+
+    Spatial.Coordinate.ProjectedCoordinate
+    Scale: Interval
+    Unit: meter
+
+with only Role changing:
+
+    Position.X
+    Position.Y
+
+Same-axis subtraction is admitted.
+
+Cross-axis scalar subtraction is rejected.
+
+This provides evidence that Role can carry computational semantics
+independent of Type, Scale, and Unit.
+
+Value and Invariants remain untested as dynamic execution dimensions.

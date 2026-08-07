@@ -186,6 +186,32 @@ def build_default_registry() -> ClassificationRegistry:
         "Edge",
     )
 
+
+    # --------------------------------------------------------
+    # Phase 4 domain-law additions
+    #
+    # Added because independently derived domain semantics
+    # require these distinctions.
+    # --------------------------------------------------------
+
+    registry.register_type(
+        "Physical",
+        "Measurement",
+        "TemperatureDifference",
+    )
+
+    registry.register_type(
+        "Spatial",
+        "Coordinate",
+        "ProjectedCoordinate",
+    )
+
+    registry.register_type(
+        "Spatial",
+        "Measurement",
+        "Displacement",
+    )
+
     return registry
 
 

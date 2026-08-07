@@ -4,6 +4,8 @@ Experimental field-aware semantic DataFrame research runtime.
 """
 
 from .dimensions import SemanticDimension
+from .domain_law import DomainLaw
+from .domain_laws import DOMAIN_LAWS, build_domain_runtime
 from .errors import (
     FieldFrameError,
     InvariantViolation,
@@ -28,10 +30,12 @@ from .vocabulary import Operation, Scale, ValidityLevel
 
 __all__ = [
     "DEFAULT_CLASSIFICATION_REGISTRY",
+    "DOMAIN_LAWS",
     "Admission",
     "Classification",
     "ClassificationError",
     "ClassificationRegistry",
+    "DomainLaw",
     "DuplicateClassification",
     "Field",
     "FieldFrameError",
@@ -49,6 +53,7 @@ __all__ = [
     "UnknownKind",
     "UnknownType",
     "ValidityLevel",
+    "build_domain_runtime",
     "build_runtime",
 ]
 
