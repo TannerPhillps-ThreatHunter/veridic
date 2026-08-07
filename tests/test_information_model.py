@@ -4,14 +4,11 @@ from veridic.catalog import (
 )
 from veridic.field import FieldValue
 from veridic.information import (
-    InformationConflict,
     InformationState,
     conjunction,
     negate,
     value_statement,
 )
-from veridic.utilities.testing import raises
-from veridic.utilities.truth import Truth
 
 
 def proposition():
@@ -29,50 +26,59 @@ def test_proposition_exists_without_knowledge():
     assert information is not None
 
 
-def test_present_information_evaluates_true():
+def test_present_information_is_represented():
     information = proposition()
 
     state = InformationState(
         information
     )
 
-    assert (
-        state.evaluate(
-            information
-        )
-        is Truth.TRUE
+    assert state.contains(
+        information
     )
 
 
-def test_absence_is_unknown_not_false():
+def test_absence_means_not_represented():
     information = proposition()
 
     state = InformationState()
 
-    assert (
-        state.evaluate(
-            information
-        )
-        is Truth.UNKNOWN
+    assert not state.contains(
+        information
     )
 
 
-def test_explicit_negation_is_false():
+def test_negative_information_is_separate_representation():
     information = proposition()
 
+    negative = negate(
+        information
+    )
+
     state = InformationState(
-        negate(information)
+        negative
+    )
+
+    assert not state.contains(
+        information
+    )
+
+    assert state.contains(
+        negative
     )
 
     assert (
-        state.evaluate(
+        state.polarity(
             information
         )
-        is Truth.FALSE
+        == (
+            False,
+            True,
+        )
     )
 
 
-def test_compound_information():
+def test_compound_information_can_be_represented():
     first = proposition()
 
     second = value_statement(
@@ -82,25 +88,21 @@ def test_compound_information():
         )
     )
 
-    state = InformationState(
-        first,
-        second,
-    )
-
     compound = conjunction(
         first,
         second,
     )
 
-    assert (
-        state.evaluate(
-            compound
-        )
-        is Truth.TRUE
+    state = InformationState(
+        compound
+    )
+
+    assert state.contains(
+        compound
     )
 
 
-def test_contradiction_is_preserved():
+def test_opposing_information_is_preserved_without_truth_collapse():
     information = proposition()
 
     state = InformationState(
@@ -108,9 +110,12 @@ def test_contradiction_is_preserved():
         negate(information),
     )
 
-    with raises(
-        InformationConflict
-    ):
-        state.evaluate(
+    assert (
+        state.polarity(
             information
         )
+        == (
+            True,
+            True,
+        )
+    )

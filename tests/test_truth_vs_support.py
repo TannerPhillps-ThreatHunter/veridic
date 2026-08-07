@@ -8,6 +8,7 @@ from veridic.information import (
     negate,
     value_statement,
 )
+from veridic.interpretation import evaluate_truth
 from veridic.knowledge import Provenance
 from veridic.knowledge_model import (
     KnowledgeBase,
@@ -25,6 +26,14 @@ def proposition():
     )
 
 
+class UnknownInterpretation:
+    def evaluate(
+        self,
+        proposition,
+    ):
+        return Truth.UNKNOWN
+
+
 def test_truth_enum_remains_three_valued():
     assert set(Truth) == {
         Truth.TRUE,
@@ -33,10 +42,26 @@ def test_truth_enum_remains_three_valued():
     }
 
 
-def test_information_truth_and_knowledge_support_are_distinct():
+def test_representation_does_not_imply_truth():
     p = proposition()
 
-    information = InformationState()
+    information = InformationState(
+        p
+    )
+
+    assert information.contains(p)
+
+    assert (
+        evaluate_truth(
+            p,
+            under=UnknownInterpretation(),
+        )
+        is Truth.UNKNOWN
+    )
+
+
+def test_truth_and_knowledge_support_are_distinct():
+    p = proposition()
 
     knowledge = KnowledgeBase(
         build_domain_runtime()
@@ -59,7 +84,10 @@ def test_information_truth_and_knowledge_support_are_distinct():
     )
 
     assert (
-        information.evaluate(p)
+        evaluate_truth(
+            p,
+            under=UnknownInterpretation(),
+        )
         is Truth.UNKNOWN
     )
 

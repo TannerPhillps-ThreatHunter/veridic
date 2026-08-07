@@ -26,7 +26,6 @@ from enum import Enum
 from typing import Any, TypeAlias
 
 from .field import Field, FieldValue
-from .utilities.truth import Truth
 from .utilities.units import Unit
 from .vocabulary import Scale
 
@@ -41,10 +40,6 @@ class ArityError(InformationError):
 
 class NotValueProposition(InformationError):
     """A Proposition does not encode a Field value statement."""
-
-
-class InformationConflict(InformationError):
-    """An information state contains both P and NOT P."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -302,9 +297,12 @@ def implication(
 class InformationState:
     """Open-world collection of represented Propositions.
 
-    Absence of P does not imply NOT P.
+    Presence means represented, not true.
 
-    Explicit contradiction is preserved rather than silently collapsed.
+    Absence means not represented, not false.
+
+    P and NOT P may coexist because representation does not itself
+    determine truth or epistemic warrant.
     """
 
     def __init__(
@@ -346,80 +344,39 @@ class InformationState:
             in self._propositions
         )
 
-    def evaluate(
+    def contains_negation(
         self,
         proposition: Proposition,
-    ) -> Truth:
-        if isinstance(
-            proposition,
-            AtomicProposition,
-        ):
-            positive = self.contains(
+    ) -> bool:
+        return self.contains(
+            negate(proposition)
+        )
+
+    def polarity(
+        self,
+        proposition: Proposition,
+    ) -> tuple[bool, bool]:
+        """Return represented positive and negative forms.
+
+        The tuple is:
+
+            (
+                P represented,
+                NOT P represented,
+            )
+
+        This is representational state only.
+
+        It is not Truth and not epistemic Support.
+        """
+
+        return (
+            self.contains(
                 proposition
-            )
-
-            negative = self.contains(
-                negate(proposition)
-            )
-
-            if positive and negative:
-                raise InformationConflict(
-                    "Information state contains "
-                    "both P and NOT P"
-                )
-
-            if positive:
-                return Truth.TRUE
-
-            if negative:
-                return Truth.FALSE
-
-            return Truth.UNKNOWN
-
-        if (
-            proposition.operator
-            is LogicalOperator.NOT
-        ):
-            return self.evaluate(
-                proposition.operands[0]
-            ).negate()
-
-        left = self.evaluate(
-            proposition.operands[0]
-        )
-
-        right = self.evaluate(
-            proposition.operands[1]
-        )
-
-        if (
-            proposition.operator
-            is LogicalOperator.AND
-        ):
-            return left.and_(
-                right
-            )
-
-        if (
-            proposition.operator
-            is LogicalOperator.OR
-        ):
-            return left.or_(
-                right
-            )
-
-        if (
-            proposition.operator
-            is LogicalOperator.IMPLIES
-        ):
-            return (
-                left.negate()
-                .or_(right)
-            )
-
-        raise ValueError(
-            f"Unsupported logical operator: "
-            f"{proposition.operator}"
+            ),
+            self.contains_negation(
+                proposition
+            ),
         )
 
 
@@ -504,7 +461,6 @@ __all__ = [
     "HAS_VALUE",
     "ArityError",
     "AtomicProposition",
-    "InformationConflict",
     "InformationError",
     "InformationRelation",
     "InformationState",

@@ -1,4 +1,4 @@
-"""Three-valued epistemic truth."""
+"""Three-valued result of Proposition truth evaluation."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from enum import Enum
 
 
 class Truth(str, Enum):
-    """A proposition may be true, false, or unresolved."""
+    """Truth evaluation may be true, false, or unresolved."""
 
     TRUE = "true"
     FALSE = "false"

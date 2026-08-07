@@ -85,15 +85,32 @@ Absence of Information is not negative Information.
         !=
     NOT P
 
-If neither P nor NOT P is represented, evaluation is:
+Representation and Truth are distinct.
 
-    UNKNOWN
+If neither P nor NOT P is represented, Veridic has no represented
+information about either polarity.
 
-This preserves Veridic's existing epistemic distinction:
+This does not itself assign a Truth value.
 
-    TRUE
-    FALSE
-    UNKNOWN
+Truth requires evaluation under an Interpretation:
+
+    Proposition
+        +
+    Interpretation
+        ->
+    Truth
+
+Therefore:
+
+    represented(P)
+        !=
+    true(P)
+
+and:
+
+    absent(P)
+        !=
+    false(P)
 
 ---
 
