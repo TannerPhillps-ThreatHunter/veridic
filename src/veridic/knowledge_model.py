@@ -615,44 +615,79 @@ class KnowledgeBase:
             )
         )
 
-    def invalidate(
+    def _stale_dependents(
         self,
         identity: str,
     ) -> None:
-        self.get(
-            identity,
-            require_active=False,
-        )
+        """Mark downstream Knowledge stale.
 
-        pending = [
-            identity,
-            *self.dependents(
-                identity
-            ),
-        ]
+        Staleness means the warrant remains historically well-formed,
+        but the Knowledge is no longer currently supported because one
+        of its premises ceased to be active.
+        """
 
-        for current in pending:
+        for dependent in self.dependents(
+            identity
+        ):
             knowledge = self._items[
-                current
+                dependent
             ]
 
             if (
                 knowledge.state
-                is KnowledgeState.RETRACTED
+                is KnowledgeState.ACTIVE
             ):
-                continue
+                self._items[
+                    dependent
+                ] = replace(
+                    knowledge,
+                    state=KnowledgeState.STALE,
+                )
 
+    def invalidate(
+        self,
+        identity: str,
+    ) -> None:
+        """Declare one Knowledge item invalid.
+
+        Invalidity applies to the target itself.
+
+        Downstream Derivations become STALE because their warrants
+        remain historically well-formed but no longer have an active
+        premise.
+        """
+
+        knowledge = self.get(
+            identity,
+            require_active=False,
+        )
+
+        if (
+            knowledge.state
+            is not KnowledgeState.RETRACTED
+        ):
             self._items[
-                current
+                identity
             ] = replace(
                 knowledge,
                 state=KnowledgeState.INVALID,
             )
 
+        self._stale_dependents(
+            identity
+        )
+
     def retract(
         self,
         identity: str,
     ) -> None:
+        """Explicitly withdraw one Knowledge item.
+
+        Retraction changes the target to RETRACTED.
+
+        Downstream Derivations become STALE rather than INVALID.
+        """
+
         knowledge = self.get(
             identity,
             require_active=False,
@@ -665,23 +700,9 @@ class KnowledgeBase:
             state=KnowledgeState.RETRACTED,
         )
 
-        for dependent in (
-            self.dependents(identity)
-        ):
-            current = self._items[
-                dependent
-            ]
-
-            if (
-                current.state
-                is not KnowledgeState.RETRACTED
-            ):
-                self._items[
-                    dependent
-                ] = replace(
-                    current,
-                    state=KnowledgeState.INVALID,
-                )
+        self._stale_dependents(
+            identity
+        )
 
     def explain(
         self,

@@ -271,7 +271,7 @@ def test_derivation_chain_preserves_warrant():
     )
 
 
-def test_invalidation_is_state_not_warrant():
+def test_invalidation_stales_downstream_without_changing_warrant():
     base = build_base()
 
     start = base.assert_value(
@@ -321,7 +321,7 @@ def test_invalidation_is_state_not_warrant():
             "K:duration",
             require_active=False,
         ).state
-        is KnowledgeState.INVALID
+        is KnowledgeState.STALE
     )
 
     assert isinstance(

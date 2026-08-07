@@ -54,6 +54,7 @@ class InvalidRevision(KnowledgeError):
 
 class KnowledgeState(str, Enum):
     ACTIVE = "active"
+    STALE = "stale"
     INVALID = "invalid"
     RETRACTED = "retracted"
 
@@ -426,10 +427,14 @@ class KnowledgeStore:
             )
         )
 
-    def _invalidate_dependents(
+    def _stale_dependents(
         self,
         identifier: str,
     ) -> None:
+        """Mark downstream derivations non-current without declaring
+        their historical warrants invalid.
+        """
+
         for dependent in self.dependents(
             identifier
         ):
@@ -437,11 +442,11 @@ class KnowledgeStore:
                 self._states[
                     dependent
                 ]
-                is not KnowledgeState.RETRACTED
+                is KnowledgeState.ACTIVE
             ):
                 self._states[
                     dependent
-                ] = KnowledgeState.INVALID
+                ] = KnowledgeState.STALE
 
     def revise_assertion(
         self,
@@ -460,7 +465,7 @@ class KnowledgeStore:
                 "replaced as an Assertion"
             )
 
-        self._invalidate_dependents(
+        self._stale_dependents(
             identifier
         )
 
@@ -494,7 +499,7 @@ class KnowledgeStore:
             identifier
         ] = KnowledgeState.RETRACTED
 
-        self._invalidate_dependents(
+        self._stale_dependents(
             identifier
         )
 

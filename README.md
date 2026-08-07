@@ -244,3 +244,16 @@ Field carries semantic position and Datum carries represented content.
 
 This is an executable reduction, not yet the final Domain-based Value
 model.
+
+## Knowledge Lifecycle
+
+Veridic distinguishes currentness from invalidity.
+
+    ACTIVE
+    STALE
+    INVALID
+    RETRACTED
+
+If a premise is invalidated or retracted, downstream Derivations become
+STALE rather than INVALID. Their historical warrants remain intact, but
+they no longer contribute active epistemic Support.

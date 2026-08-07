@@ -110,7 +110,7 @@ def test_transitive_dependency_tracking():
     )
 
 
-def test_revision_invalidates_downstream_derivations():
+def test_revision_makes_downstream_derivations_stale():
     store = build_chain()
 
     store.revise_assertion(
@@ -136,14 +136,14 @@ def test_revision_invalidates_downstream_derivations():
         store.state(
             "event.duration"
         )
-        is KnowledgeState.INVALID
+        is KnowledgeState.STALE
     )
 
     assert (
         store.state(
             "network.rate"
         )
-        is KnowledgeState.INVALID
+        is KnowledgeState.STALE
     )
 
     assert (
