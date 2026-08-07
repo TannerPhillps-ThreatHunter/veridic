@@ -168,3 +168,70 @@ This provides evidence that Role can carry computational semantics
 independent of Type, Scale, and Unit.
 
 Value and Invariants remain untested as dynamic execution dimensions.
+
+---
+
+# Phase 5 — Executable Invariants
+
+FieldFrame now distinguishes:
+
+    Representational Validity
+    Semantic Validity
+    Contextual Validity
+
+Canonical test:
+
+    Duration * Scalar -> Duration
+
+is semantically admitted.
+
+Given:
+
+    event.start    = 10
+    event.end      = 14
+    event.duration = 4
+
+the invariant:
+
+    event.duration = event.end - event.start
+
+is satisfied.
+
+Computing:
+
+    event.duration * 2
+
+produces:
+
+    8 seconds
+
+which is still semantically a valid Duration.
+
+Replacing Event.Duration with that value while retaining the original
+bounds violates the relational invariant.
+
+Therefore:
+
+    Semantically Valid Operation
+        !=
+    Contextually Valid Transformation
+
+This provides independent computational purpose for Invariants.
+
+Value also now has an explicit position:
+
+    Field semantics determine admission.
+    Value determines execution.
+    Invariants determine contextual validity.
+
+Remaining hard questions include:
+
+- invariant inheritance;
+- invariant transfer;
+- invariants over derived Fields;
+- partial / missing records;
+- conflicting invariants;
+- frame-level invariants;
+- whether Role changes should preserve or discard invariants;
+- proof versus runtime validation;
+- lazy evaluation.

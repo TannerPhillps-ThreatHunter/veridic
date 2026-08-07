@@ -105,9 +105,27 @@ POSITION_Y_A = Field(
 )
 
 
+# ------------------------------------------------------------
+# Dimensionless scalar
+# ------------------------------------------------------------
+
+DIMENSIONLESS_SCALAR = Field(
+    name="scalar.multiplier",
+    classification=REGISTRY.classify(
+        "Quantitative",
+        "Measurement",
+        "Scalar",
+    ),
+    scale=Scale.RATIO,
+    role="Arithmetic.Multiplier",
+    unit=None,
+)
+
+
 __all__ = [
     "BYTE_COUNT",
     "DESTINATION_IPV4",
+    "DIMENSIONLESS_SCALAR",
     "DURATION",
     "POSITION_X_A",
     "POSITION_X_B",

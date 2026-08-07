@@ -58,6 +58,26 @@ DURATION = Field(
             name="non_negative",
             expression="value >= 0",
             scope=InvariantScope.VALUE,
+            predicate=lambda context: context["value"] >= 0,
+            required_keys=("value",),
+        ),
+        Invariant(
+            name="matches_event_bounds",
+            expression=(
+                "event.duration == "
+                "event.end - event.start"
+            ),
+            scope=InvariantScope.RELATIONAL,
+            predicate=lambda context: (
+                context["event.duration"]
+                == context["event.end"]
+                - context["event.start"]
+            ),
+            required_keys=(
+                "event.start",
+                "event.end",
+                "event.duration",
+            ),
         ),
     ),
 )

@@ -212,6 +212,17 @@ def build_default_registry() -> ClassificationRegistry:
         "Displacement",
     )
 
+
+    # --------------------------------------------------------
+    # Phase 5 — dimensionless quantitative scalar
+    # --------------------------------------------------------
+
+    registry.register_type(
+        "Quantitative",
+        "Measurement",
+        "Scalar",
+    )
+
     return registry
 
 

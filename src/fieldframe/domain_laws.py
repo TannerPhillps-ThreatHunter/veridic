@@ -344,7 +344,86 @@ NETWORK_DATA_RATE = DomainLaw(
 )
 
 
+# ============================================================
+# TEMPORAL SCALING LAW
+#
+# A duration multiplied by a dimensionless scalar remains a
+# duration.
+#
+# This law is intentionally separate from contextual validity.
+#
+#     4 seconds * 2 = 8 seconds
+#
+# is semantically meaningful.
+#
+# Whether 8 seconds may replace a particular Event.Duration is
+# determined later by Role and Invariants.
+# ============================================================
+
+
+def _duration_scaling(fields: tuple[Field, ...]) -> bool:
+    if len(fields) != 2:
+        return False
+
+    duration, scalar = fields
+
+    return (
+        duration.category == "Temporal"
+        and duration.kind == "Measurement"
+        and duration.type == "Duration"
+        and duration.scale is Scale.RATIO
+        and duration.unit is not None
+        and scalar.category == "Quantitative"
+        and scalar.kind == "Measurement"
+        and scalar.type == "Scalar"
+        and scalar.scale is Scale.RATIO
+        and scalar.unit is None
+    )
+
+
+def _duration_scaling_transfer(
+    fields: tuple[Field, ...],
+) -> Field:
+    duration, scalar = fields
+
+    return Field(
+        name=f"({duration.name}*{scalar.name})",
+        classification=REGISTRY.classify(
+            "Temporal",
+            "Measurement",
+            "Duration",
+        ),
+        scale=Scale.RATIO,
+        role="Derived.Duration",
+        unit=duration.unit,
+    )
+
+
+DURATION_SCALING = DomainLaw(
+    name="domain-duration-scaling",
+    domain="Temporal",
+    statement=(
+        "A duration multiplied by a dimensionless scalar "
+        "remains a duration."
+    ),
+    operation=Operation.MUL,
+    arity=2,
+    depends_on=frozenset(
+        {
+            D.CATEGORY,
+            D.KIND,
+            D.TYPE,
+            D.SCALE,
+            D.UNIT,
+        }
+    ),
+    admit=_duration_scaling,
+    transfer=_duration_scaling_transfer,
+)
+
+
 DOMAIN_LAWS = (
+    DURATION_SCALING,
     TEMPORAL_COORDINATE_DIFFERENCE,
     TEMPERATURE_DIFFERENCE,
     SPATIAL_COORDINATE_DIFFERENCE,
