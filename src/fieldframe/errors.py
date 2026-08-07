@@ -15,3 +15,7 @@ class InvariantViolation(FieldFrameError):
 
 class UndefinedOperation(SemanticError):
     """No semantic rule exists for an operation over the supplied Fields."""
+
+
+class ContextualValidationError(InvariantViolation):
+    """A semantically valid transformation violates contextual invariants."""

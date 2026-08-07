@@ -33,3 +33,35 @@ The initial computational model is:
 
 FieldFrame is currently experimental research. The field hierarchy,
 operation algebra, and runtime semantics are not yet considered stable.
+
+## Current Runtime
+
+FieldFrame now includes an experimental `SemanticDataFrame` backed by
+Polars.
+
+```text
+SemanticDataFrame
+    |
+    +-- SemanticSchema
+    |       |
+    |       +-- Field
+    |
+    +-- SemanticRuntime
+    |
+    +-- Invariant Validation
+    |
+    +-- Polars```
+A derived column transforms both semantics and values:
+
+FieldA x FieldB -> FieldOut
+ValueA x ValueB -> ValueOut
+
+FieldFrame distinguishes:
+
+Representational Validity
+    ->
+Semantic Validity
+    ->
+Contextual Validity
+
+See docs/theory/semantic-dataframe.md.
