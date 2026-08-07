@@ -271,3 +271,19 @@ Lifecycle is append-only:
     ACTIVE -> RETRACTED
 
 Current state is derived from immutable KnowledgeTransition history.
+
+## Foundational Data Model Experiment
+
+Veridic is experimentally reducing its Field-centric substrate toward:
+
+    Identity
+    Datum
+    Domain
+    Relation
+
+Current Fields can be decomposed into relational structure and
+reconstructed without changing the operational runtime.
+
+The experiment is intentionally non-destructive. Field remains the
+current executable semantic abstraction until the reduction survives
+further adversarial testing.
