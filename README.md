@@ -287,3 +287,18 @@ reconstructed without changing the operational runtime.
 The experiment is intentionally non-destructive. Field remains the
 current executable semantic abstraction until the reduction survives
 further adversarial testing.
+
+## Operational CLI
+
+Veridic now exposes its semantic runtime as a command-line tool.
+
+    ./bin/veridic fields
+
+    ./bin/veridic show event.duration
+
+    ./bin/veridic resolve sub event.end event.start
+
+    ./bin/veridic compute sub event.end=15.0 event.start=10.0
+
+The CLI distinguishes semantic rejection from contextual invariant
+failure and supports JSON output for programmatic use.
