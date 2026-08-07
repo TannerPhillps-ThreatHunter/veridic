@@ -16,7 +16,20 @@ from .hierarchy import ClassificationRegistry
 from .operator import OperatorRule
 from .relations import Relation, supports
 from .runtime import SemanticRuntime
+from .utilities.dimensions import Dimension
+from .utilities.units import Unit
 from .vocabulary import Operation, Scale
+
+
+EXPERIMENT_DIMENSION = Dimension.base(
+    "Experiment"
+)
+
+EXPERIMENT_UNIT = Unit(
+    name="unit",
+    symbol="u",
+    dimension=EXPERIMENT_DIMENSION,
+)
 
 
 def build_experiment_registry() -> ClassificationRegistry:
@@ -122,7 +135,7 @@ TEMPORAL_A = Field(
     ),
     scale=Scale.INTERVAL,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 TEMPORAL_B = Field(
@@ -134,7 +147,7 @@ TEMPORAL_B = Field(
     ),
     scale=Scale.INTERVAL,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 SPATIAL_A = Field(
@@ -146,7 +159,7 @@ SPATIAL_A = Field(
     ),
     scale=Scale.INTERVAL,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 SPATIAL_B = Field(
@@ -158,7 +171,7 @@ SPATIAL_B = Field(
     ),
     scale=Scale.INTERVAL,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 
@@ -183,7 +196,7 @@ COUNTER_A = Field(
     ),
     scale=Scale.RATIO,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 COUNTER_B = Field(
@@ -195,7 +208,7 @@ COUNTER_B = Field(
     ),
     scale=Scale.RATIO,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 MEASUREMENT_A = Field(
@@ -207,7 +220,7 @@ MEASUREMENT_A = Field(
     ),
     scale=Scale.RATIO,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 MEASUREMENT_B = Field(
@@ -219,7 +232,7 @@ MEASUREMENT_B = Field(
     ),
     scale=Scale.RATIO,
     role="Experiment.Operand",
-    unit="unit",
+    unit=EXPERIMENT_UNIT,
 )
 
 

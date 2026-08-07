@@ -22,4 +22,4 @@ def test_timestamp_difference_is_duration():
     )
 
     assert result.output.scale is Scale.RATIO
-    assert result.output.unit == "second"
+    assert result.output.unit_name == "second"

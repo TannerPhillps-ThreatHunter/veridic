@@ -6,6 +6,7 @@ from .catalog import (
     CELSIUS,
     DATA_RATE,
     DEFAULT_UNIT_REGISTRY,
+    DEGREE,
     DELTA_CELSIUS,
     HOUR,
     ITEM,
@@ -16,6 +17,7 @@ from .catalog import (
     MILLISECOND,
     MINUTE,
     ONE,
+    PACKET,
     SECOND,
 )
 from .model import (
@@ -37,6 +39,7 @@ __all__ = [
     "CELSIUS",
     "DATA_RATE",
     "DEFAULT_UNIT_REGISTRY",
+    "DEGREE",
     "DELTA_CELSIUS",
     "HOUR",
     "ITEM",
@@ -47,6 +50,7 @@ __all__ = [
     "MILLISECOND",
     "MINUTE",
     "ONE",
+    "PACKET",
     "SECOND",
     "AffineUnitOperation",
     "DimensionMismatch",

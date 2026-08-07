@@ -1,4 +1,5 @@
 from veridic.catalog import DURATION, SOURCE_IPV4, TIMESTAMP_START
+from veridic.utilities.units import SECOND
 from veridic.vocabulary import Scale
 
 
@@ -14,7 +15,7 @@ def test_measurement_is_not_part_of_classification_chain():
     assert DURATION.type == "Duration"
 
     assert DURATION.scale is Scale.RATIO
-    assert DURATION.unit == "second"
+    assert DURATION.unit_name == "second"
 
 
 def test_role_is_contextual_semantics():
@@ -31,5 +32,5 @@ def test_field_signature_excludes_name_and_value():
         "Duration",
         Scale.RATIO,
         "Event.Duration",
-        "second",
+        SECOND,
     )

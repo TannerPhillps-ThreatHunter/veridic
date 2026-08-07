@@ -235,3 +235,134 @@ make semantic transfer rules derive Units through algebra instead of
 hard-coded strings such as:
 
     "byte/second"
+
+---
+
+# Phase 8 — Field Integration
+
+Native Units are now part of Field semantics.
+
+The previous representation:
+
+    Field.unit: str | None
+
+has been removed.
+
+The Field now requires:
+
+    Field.unit: Unit | None
+
+A textual unit such as:
+
+    "second"
+
+is rejected.
+
+The corresponding semantic object is:
+
+    SECOND
+
+with:
+
+    Name:
+        second
+
+    Symbol:
+        s
+
+    Dimension:
+        Time
+
+---
+
+# Derived Unit Semantics
+
+Operator transfer rules no longer hard-code compound unit strings.
+
+Previously:
+
+    ByteCount / Duration
+        ->
+    unit = "byte/second"
+
+Now:
+
+    ByteCount.unit / Duration.unit
+        ->
+    BYTE / SECOND
+
+The compound Unit is derived by native unit algebra.
+
+Its Dimension is independently derived:
+
+    Data / Time
+
+Therefore the result:
+
+    Quantitative.Rate.DataRate
+
+and:
+
+    Data / Time
+
+are produced by two distinct semantic systems.
+
+The classification algebra answers:
+
+    What does this result mean?
+
+The dimensional algebra answers:
+
+    What quantity structure does it possess?
+
+Agreement between those systems is now testable.
+
+---
+
+# Field Dimensional Projection
+
+A Field with a Unit exposes:
+
+    Field.dimension
+
+as the dimensional signature of that Unit.
+
+This does not collapse Dimension into Field Type.
+
+For example:
+
+    ByteCount
+        Type: ByteCount
+        Dimension: Data
+
+and another future Field may also possess:
+
+    Dimension: Data
+
+without becoming semantically identical to ByteCount.
+
+Dimension is therefore a projection of Unit semantics rather than a
+replacement for Field classification.
+
+---
+
+# Native Unit Enforcement
+
+Field construction now rejects arbitrary unit strings.
+
+This closes an important semantic escape hatch.
+
+A Field can no longer claim:
+
+    unit = "whatever"
+
+without that Unit existing as a structured Veridic semantic object.
+
+The Unit must possess:
+
+    identity
+    dimensionality
+    scale
+    offset
+
+and participate in the native Unit algebra.

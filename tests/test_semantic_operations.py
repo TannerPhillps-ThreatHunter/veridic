@@ -49,7 +49,7 @@ def test_timestamp_difference_derives_duration():
     assert output.kind == "Measurement"
     assert output.type == "Duration"
     assert output.scale is Scale.RATIO
-    assert output.unit == "second"
+    assert output.unit_name == "second"
 
 
 def test_duration_plus_duration_derives_duration():
@@ -64,7 +64,7 @@ def test_duration_plus_duration_derives_duration():
     assert output is not None
     assert output.type == "Duration"
     assert output.scale is Scale.RATIO
-    assert output.unit == "second"
+    assert output.unit_name == "second"
 
 
 def test_bytes_divided_by_duration_derives_data_rate():
@@ -79,7 +79,7 @@ def test_bytes_divided_by_duration_derives_data_rate():
     assert output is not None
     assert output.kind == "Rate"
     assert output.type == "DataRate"
-    assert output.unit == "byte/second"
+    assert output.unit_name == "byte/second"
 
 
 def test_packets_divided_by_duration_derives_packet_rate():
@@ -94,4 +94,4 @@ def test_packets_divided_by_duration_derives_packet_rate():
     assert output is not None
     assert output.kind == "Rate"
     assert output.type == "PacketRate"
-    assert output.unit == "packet/second"
+    assert output.unit_name == "packet/second"

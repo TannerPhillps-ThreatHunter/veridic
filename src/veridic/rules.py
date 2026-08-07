@@ -8,6 +8,11 @@ from .operator import OperatorRule
 from .relations import Relation, supports
 from .runtime import SemanticRuntime
 from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
+from .utilities.units import (
+    BYTE,
+    PACKET,
+    SECOND,
+)
 from .vocabulary import Operation, Scale
 
 CLASSIFICATION = frozenset(
@@ -138,12 +143,12 @@ def _byte_rate(fields: tuple[Field, ...]) -> bool:
     return (
         lhs.type == "ByteCount"
         and lhs.scale is Scale.RATIO
-        and lhs.unit == "byte"
+        and lhs.unit == BYTE
         and rhs.category == "Temporal"
         and rhs.kind == "Measurement"
         and rhs.type == "Duration"
         and rhs.scale is Scale.RATIO
-        and rhs.unit == "second"
+        and rhs.unit == SECOND
     )
 
 
@@ -151,6 +156,9 @@ def _byte_rate_transfer(
     fields: tuple[Field, ...],
 ) -> Field:
     lhs, rhs = fields
+
+    assert lhs.unit is not None
+    assert rhs.unit is not None
 
     return Field(
         name=f"({lhs.name}/{rhs.name})",
@@ -161,7 +169,10 @@ def _byte_rate_transfer(
         ),
         scale=Scale.RATIO,
         role="Derived.DataRate",
-        unit="byte/second",
+        unit=(
+            lhs.unit
+            / rhs.unit
+        ),
     )
 
 
@@ -174,12 +185,12 @@ def _packet_rate(fields: tuple[Field, ...]) -> bool:
     return (
         lhs.type == "PacketCount"
         and lhs.scale is Scale.RATIO
-        and lhs.unit == "packet"
+        and lhs.unit == PACKET
         and rhs.category == "Temporal"
         and rhs.kind == "Measurement"
         and rhs.type == "Duration"
         and rhs.scale is Scale.RATIO
-        and rhs.unit == "second"
+        and rhs.unit == SECOND
     )
 
 
@@ -187,6 +198,9 @@ def _packet_rate_transfer(
     fields: tuple[Field, ...],
 ) -> Field:
     lhs, rhs = fields
+
+    assert lhs.unit is not None
+    assert rhs.unit is not None
 
     return Field(
         name=f"({lhs.name}/{rhs.name})",
@@ -197,7 +211,10 @@ def _packet_rate_transfer(
         ),
         scale=Scale.RATIO,
         role="Derived.PacketRate",
-        unit="packet/second",
+        unit=(
+            lhs.unit
+            / rhs.unit
+        ),
     )
 
 

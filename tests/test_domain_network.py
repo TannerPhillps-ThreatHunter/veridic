@@ -19,4 +19,4 @@ def test_bytes_per_duration_derives_data_rate():
     )
 
     assert result.output.scale is Scale.RATIO
-    assert result.output.unit == "byte/second"
+    assert result.output.unit_name == "byte/second"

@@ -17,6 +17,13 @@ from .field import Field
 from .relations import Relation, supports
 from .runtime import SemanticRuntime
 from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
+from .utilities.units import (
+    BYTE,
+    CELSIUS,
+    DELTA_CELSIUS,
+    METER,
+    SECOND,
+)
 from .vocabulary import Operation, Scale
 
 # ============================================================
@@ -107,7 +114,7 @@ def _temperature_difference(fields: tuple[Field, ...]) -> bool:
         and lhs.type == rhs.type == "Temperature"
         and lhs.scale is Scale.INTERVAL
         and rhs.scale is Scale.INTERVAL
-        and lhs.unit == rhs.unit == "degree_Celsius"
+        and lhs.unit == rhs.unit == CELSIUS
     )
 
 
@@ -125,7 +132,7 @@ def _temperature_difference_transfer(
         ),
         scale=Scale.RATIO,
         role="Derived.TemperatureDifference",
-        unit="delta_degree_Celsius",
+        unit=DELTA_CELSIUS,
     )
 
 
@@ -181,7 +188,7 @@ def _projected_coordinate_difference(
         and lhs.type == rhs.type == "ProjectedCoordinate"
         and lhs.scale is Scale.INTERVAL
         and rhs.scale is Scale.INTERVAL
-        and lhs.unit == rhs.unit == "meter"
+        and lhs.unit == rhs.unit == METER
         and lhs.role == rhs.role
         and lhs.role in {"Position.X", "Position.Y"}
     )
@@ -203,7 +210,7 @@ def _projected_coordinate_difference_transfer(
         ),
         scale=Scale.RATIO,
         role=f"Displacement.{axis}",
-        unit="meter",
+        unit=METER,
     )
 
 
@@ -295,12 +302,12 @@ def _data_rate(fields: tuple[Field, ...]) -> bool:
         and amount.kind == "Measurement"
         and amount.type == "ByteCount"
         and amount.scale is Scale.RATIO
-        and amount.unit == "byte"
+        and amount.unit == BYTE
         and duration.category == "Temporal"
         and duration.kind == "Measurement"
         and duration.type == "Duration"
         and duration.scale is Scale.RATIO
-        and duration.unit == "second"
+        and duration.unit == SECOND
     )
 
 
@@ -308,6 +315,9 @@ def _data_rate_transfer(
     fields: tuple[Field, ...],
 ) -> Field:
     amount, duration = fields
+
+    assert amount.unit is not None
+    assert duration.unit is not None
 
     return Field(
         name=f"({amount.name}/{duration.name})",
@@ -318,7 +328,10 @@ def _data_rate_transfer(
         ),
         scale=Scale.RATIO,
         role="Derived.DataRate",
-        unit="byte/second",
+        unit=(
+            amount.unit
+            / duration.unit
+        ),
     )
 
 

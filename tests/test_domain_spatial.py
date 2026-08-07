@@ -26,7 +26,7 @@ def test_same_axis_coordinate_difference_is_valid():
     )
 
     assert result.output.scale is Scale.RATIO
-    assert result.output.unit == "meter"
+    assert result.output.unit_name == "meter"
     assert result.output.role == "Displacement.X"
 
 

@@ -12,6 +12,10 @@ from .catalog import (
 )
 from .field import Field
 from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
+from .utilities.units import (
+    CELSIUS,
+    METER,
+)
 from .vocabulary import Scale
 
 # ------------------------------------------------------------
@@ -32,7 +36,7 @@ TEMPERATURE_C_A = Field(
     ),
     scale=Scale.INTERVAL,
     role="Sensor.Temperature",
-    unit="degree_Celsius",
+    unit=CELSIUS,
 )
 
 TEMPERATURE_C_B = Field(
@@ -44,7 +48,7 @@ TEMPERATURE_C_B = Field(
     ),
     scale=Scale.INTERVAL,
     role="Sensor.Temperature",
-    unit="degree_Celsius",
+    unit=CELSIUS,
 )
 
 
@@ -77,7 +81,7 @@ POSITION_X_A = Field(
     ),
     scale=Scale.INTERVAL,
     role="Position.X",
-    unit="meter",
+    unit=METER,
 )
 
 POSITION_X_B = Field(
@@ -89,7 +93,7 @@ POSITION_X_B = Field(
     ),
     scale=Scale.INTERVAL,
     role="Position.X",
-    unit="meter",
+    unit=METER,
 )
 
 POSITION_Y_A = Field(
@@ -101,7 +105,7 @@ POSITION_Y_A = Field(
     ),
     scale=Scale.INTERVAL,
     role="Position.Y",
-    unit="meter",
+    unit=METER,
 )
 
 

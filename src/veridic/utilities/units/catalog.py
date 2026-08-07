@@ -9,6 +9,7 @@ from __future__ import annotations
 from fractions import Fraction
 
 from ..dimensions import (
+    ANGLE,
     COUNT,
     DATA,
     DIMENSIONLESS,
@@ -66,6 +67,13 @@ KILOMETER = Unit(
     scale=Fraction(1000),
 )
 
+
+DEGREE = Unit(
+    name="degree",
+    symbol="deg",
+    dimension=ANGLE,
+)
+
 BYTE = Unit(
     name="byte",
     symbol="B",
@@ -92,6 +100,13 @@ ITEM = Unit(
     dimension=COUNT,
 )
 
+
+PACKET = Unit(
+    name="packet",
+    symbol="pkt",
+    dimension=COUNT,
+)
+
 KELVIN = Unit(
     name="kelvin",
     symbol="K",
@@ -99,7 +114,7 @@ KELVIN = Unit(
 )
 
 CELSIUS = Unit(
-    name="degree Celsius",
+    name="degree_Celsius",
     symbol="degC",
     dimension=TEMPERATURE,
     scale=Fraction(1),
@@ -110,7 +125,7 @@ CELSIUS = Unit(
 )
 
 DELTA_CELSIUS = Unit(
-    name="delta degree Celsius",
+    name="delta_degree_Celsius",
     symbol="delta_degC",
     dimension=TEMPERATURE,
 )
@@ -127,10 +142,12 @@ for _unit in (
     HOUR,
     METER,
     KILOMETER,
+    DEGREE,
     BYTE,
     KILOBYTE,
     BIT,
     ITEM,
+    PACKET,
     KELVIN,
     CELSIUS,
     DELTA_CELSIUS,
@@ -147,6 +164,7 @@ __all__ = [
     "CELSIUS",
     "DATA_RATE",
     "DEFAULT_UNIT_REGISTRY",
+    "DEGREE",
     "DELTA_CELSIUS",
     "HOUR",
     "ITEM",
@@ -157,5 +175,6 @@ __all__ = [
     "MILLISECOND",
     "MINUTE",
     "ONE",
+    "PACKET",
     "SECOND",
 ]

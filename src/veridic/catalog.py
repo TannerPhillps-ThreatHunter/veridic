@@ -8,6 +8,13 @@ from __future__ import annotations
 from .field import Field
 from .invariant import Invariant, InvariantScope
 from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
+from .utilities.units import (
+    BYTE,
+    CELSIUS,
+    DEGREE,
+    PACKET,
+    SECOND,
+)
 from .vocabulary import Scale
 
 
@@ -28,7 +35,7 @@ TIMESTAMP_START = Field(
     ),
     scale=Scale.INTERVAL,
     role="Event.Start",
-    unit="second",
+    unit=SECOND,
 )
 
 TIMESTAMP_END = Field(
@@ -40,7 +47,7 @@ TIMESTAMP_END = Field(
     ),
     scale=Scale.INTERVAL,
     role="Event.End",
-    unit="second",
+    unit=SECOND,
 )
 
 DURATION = Field(
@@ -52,7 +59,7 @@ DURATION = Field(
     ),
     scale=Scale.RATIO,
     role="Event.Duration",
-    unit="second",
+    unit=SECOND,
     invariants=(
         Invariant(
             name="non_negative",
@@ -113,7 +120,7 @@ BYTE_COUNT = Field(
     ),
     scale=Scale.RATIO,
     role="Network.Transferred",
-    unit="byte",
+    unit=BYTE,
 )
 
 PACKET_COUNT = Field(
@@ -125,7 +132,7 @@ PACKET_COUNT = Field(
     ),
     scale=Scale.RATIO,
     role="Network.Transferred",
-    unit="packet",
+    unit=PACKET,
 )
 
 SEVERITY = Field(
@@ -159,7 +166,7 @@ TEMPERATURE = Field(
     ),
     scale=Scale.INTERVAL,
     role="Sensor.Measurement",
-    unit="degree_Celsius",
+    unit=CELSIUS,
 )
 
 LATITUDE = Field(
@@ -171,7 +178,7 @@ LATITUDE = Field(
     ),
     scale=Scale.INTERVAL,
     role="Location.Latitude",
-    unit="degree",
+    unit=DEGREE,
 )
 
 FREE_TEXT = Field(

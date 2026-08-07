@@ -25,7 +25,7 @@ def test_absolute_celsius_difference_changes_type_and_scale():
     )
 
     assert result.output.scale is Scale.RATIO
-    assert result.output.unit == "delta_degree_Celsius"
+    assert result.output.unit_name == "delta_degree_Celsius"
 
 
 def test_absolute_celsius_addition_is_not_defined():
