@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from .field import Classification, Field
+from .field import Field
 from .operator import OperatorRule
 from .relations import Relation, supports
 from .runtime import SemanticRuntime
+from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
 from .vocabulary import Operation, Scale
 
 
@@ -60,10 +61,10 @@ def _timestamp_difference_transfer(fields: tuple[Field, ...]) -> Field:
 
     return Field(
         name=f"({lhs.name}-{rhs.name})",
-        classification=Classification(
-            category="Temporal",
-            kind="Measurement",
-            type="Duration",
+        classification=REGISTRY.classify(
+            "Temporal",
+            "Measurement",
+            "Duration",
         ),
         scale=Scale.RATIO,
         role="Derived.Duration",
@@ -91,10 +92,10 @@ def _duration_addition_transfer(fields: tuple[Field, ...]) -> Field:
 
     return Field(
         name=f"({lhs.name}+{rhs.name})",
-        classification=Classification(
-            category="Temporal",
-            kind="Measurement",
-            type="Duration",
+        classification=REGISTRY.classify(
+            "Temporal",
+            "Measurement",
+            "Duration",
         ),
         scale=Scale.RATIO,
         role="Derived.Duration",
@@ -125,10 +126,10 @@ def _byte_rate_transfer(fields: tuple[Field, ...]) -> Field:
 
     return Field(
         name=f"({lhs.name}/{rhs.name})",
-        classification=Classification(
-            category="Quantitative",
-            kind="Rate",
-            type="DataRate",
+        classification=REGISTRY.classify(
+            "Quantitative",
+            "Rate",
+            "DataRate",
         ),
         scale=Scale.RATIO,
         role="Derived.DataRate",
@@ -159,10 +160,10 @@ def _packet_rate_transfer(fields: tuple[Field, ...]) -> Field:
 
     return Field(
         name=f"({lhs.name}/{rhs.name})",
-        classification=Classification(
-            category="Quantitative",
-            kind="Rate",
-            type="PacketRate",
+        classification=REGISTRY.classify(
+            "Quantitative",
+            "Rate",
+            "PacketRate",
         ),
         scale=Scale.RATIO,
         role="Derived.PacketRate",

@@ -9,15 +9,29 @@ from .errors import (
     SemanticError,
     UndefinedOperation,
 )
-from .field import Classification, Field, FieldValue
+from .field import Field, FieldValue
+from .hierarchy import (
+    Classification,
+    ClassificationError,
+    ClassificationRegistry,
+    DuplicateClassification,
+    UnknownCategory,
+    UnknownKind,
+    UnknownType,
+)
 from .invariant import Invariant, InvariantScope
 from .rules import build_runtime
 from .runtime import Admission, SemanticRuntime
+from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY
 from .vocabulary import Operation, Scale, ValidityLevel
 
 __all__ = [
+    "DEFAULT_CLASSIFICATION_REGISTRY",
     "Admission",
     "Classification",
+    "ClassificationError",
+    "ClassificationRegistry",
+    "DuplicateClassification",
     "Field",
     "FieldFrameError",
     "FieldValue",
@@ -29,6 +43,9 @@ __all__ = [
     "SemanticError",
     "SemanticRuntime",
     "UndefinedOperation",
+    "UnknownCategory",
+    "UnknownKind",
+    "UnknownType",
     "ValidityLevel",
     "build_runtime",
 ]

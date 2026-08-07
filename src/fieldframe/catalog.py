@@ -5,16 +5,26 @@ These are fixtures for theory testing, not a canonical ontology.
 
 from __future__ import annotations
 
-from .field import Classification, Field
+from .field import Field
 from .invariant import Invariant, InvariantScope
+from .taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
 from .vocabulary import Scale
+
+
+def _classification(
+    category: str,
+    kind: str,
+    type_name: str,
+):
+    return REGISTRY.classify(category, kind, type_name)
+
 
 TIMESTAMP_START = Field(
     name="event.start",
-    classification=Classification(
-        category="Temporal",
-        kind="Coordinate",
-        type="Timestamp",
+    classification=_classification(
+        "Temporal",
+        "Coordinate",
+        "Timestamp",
     ),
     scale=Scale.INTERVAL,
     role="Event.Start",
@@ -23,10 +33,10 @@ TIMESTAMP_START = Field(
 
 TIMESTAMP_END = Field(
     name="event.end",
-    classification=Classification(
-        category="Temporal",
-        kind="Coordinate",
-        type="Timestamp",
+    classification=_classification(
+        "Temporal",
+        "Coordinate",
+        "Timestamp",
     ),
     scale=Scale.INTERVAL,
     role="Event.End",
@@ -35,10 +45,10 @@ TIMESTAMP_END = Field(
 
 DURATION = Field(
     name="event.duration",
-    classification=Classification(
-        category="Temporal",
-        kind="Measurement",
-        type="Duration",
+    classification=_classification(
+        "Temporal",
+        "Measurement",
+        "Duration",
     ),
     scale=Scale.RATIO,
     role="Event.Duration",
@@ -54,10 +64,10 @@ DURATION = Field(
 
 SOURCE_IPV4 = Field(
     name="source.ip",
-    classification=Classification(
-        category="Identity",
-        kind="Address",
-        type="IPv4Address",
+    classification=_classification(
+        "Identity",
+        "Address",
+        "IPv4Address",
     ),
     scale=Scale.NOMINAL,
     role="Participant.Source",
@@ -65,10 +75,10 @@ SOURCE_IPV4 = Field(
 
 DESTINATION_IPV4 = Field(
     name="destination.ip",
-    classification=Classification(
-        category="Identity",
-        kind="Address",
-        type="IPv4Address",
+    classification=_classification(
+        "Identity",
+        "Address",
+        "IPv4Address",
     ),
     scale=Scale.NOMINAL,
     role="Participant.Destination",
@@ -76,10 +86,10 @@ DESTINATION_IPV4 = Field(
 
 BYTE_COUNT = Field(
     name="network.bytes",
-    classification=Classification(
-        category="Quantitative",
-        kind="Measurement",
-        type="ByteCount",
+    classification=_classification(
+        "Quantitative",
+        "Measurement",
+        "ByteCount",
     ),
     scale=Scale.RATIO,
     role="Network.Transferred",
@@ -88,10 +98,10 @@ BYTE_COUNT = Field(
 
 PACKET_COUNT = Field(
     name="network.packets",
-    classification=Classification(
-        category="Quantitative",
-        kind="Counter",
-        type="PacketCount",
+    classification=_classification(
+        "Quantitative",
+        "Counter",
+        "PacketCount",
     ),
     scale=Scale.RATIO,
     role="Network.Transferred",
@@ -100,10 +110,10 @@ PACKET_COUNT = Field(
 
 SEVERITY = Field(
     name="detection.severity",
-    classification=Classification(
-        category="Categorical",
-        kind="Classification",
-        type="Severity",
+    classification=_classification(
+        "Categorical",
+        "Classification",
+        "Severity",
     ),
     scale=Scale.ORDINAL,
     role="Detection.Severity",
@@ -111,11 +121,68 @@ SEVERITY = Field(
 
 EMPLOYEE_ID = Field(
     name="employee.id",
-    classification=Classification(
-        category="Identity",
-        kind="Identifier",
-        type="EmployeeIdentifier",
+    classification=_classification(
+        "Identity",
+        "Identifier",
+        "EmployeeIdentifier",
     ),
     scale=Scale.NOMINAL,
     role="Employee.Identity",
+)
+
+TEMPERATURE = Field(
+    name="sensor.temperature",
+    classification=_classification(
+        "Physical",
+        "Measurement",
+        "Temperature",
+    ),
+    scale=Scale.INTERVAL,
+    role="Sensor.Measurement",
+    unit="degree_Celsius",
+)
+
+LATITUDE = Field(
+    name="location.latitude",
+    classification=_classification(
+        "Spatial",
+        "Coordinate",
+        "Latitude",
+    ),
+    scale=Scale.INTERVAL,
+    role="Location.Latitude",
+    unit="degree",
+)
+
+FREE_TEXT = Field(
+    name="message.text",
+    classification=_classification(
+        "Descriptive",
+        "Text",
+        "FreeText",
+    ),
+    scale=Scale.NOMINAL,
+    role="Message.Content",
+)
+
+TAG_SET = Field(
+    name="record.tags",
+    classification=_classification(
+        "Categorical",
+        "Collection",
+        "TagSet",
+    ),
+    scale=Scale.NOMINAL,
+    role="Record.Tags",
+)
+
+EDGE = Field(
+    name="graph.edge",
+    classification=_classification(
+        "Relational",
+        "Relationship",
+        "Edge",
+    ),
+    scale=Scale.NOMINAL,
+    role="Graph.Relationship",
 )

@@ -69,3 +69,31 @@ Research before implementing rules for:
 - identifiers with meaningful lexical structure.
 
 These cases exist specifically to break simplistic NOIR and datatype rules.
+
+---
+
+# Phase 2 — Explicit Hierarchy Tests
+
+The implementation now enforces:
+
+    Category -> Kind -> Type
+
+as a strict three-tier classification path.
+
+Important result:
+
+    Temporal.Measurement
+    Quantitative.Measurement
+    Physical.Measurement
+
+are distinct Kinds despite sharing the local label "Measurement".
+
+This means classification identity is lineage-sensitive.
+
+The next adversarial question is computational:
+
+> Does each tier independently change operation admission or output
+> semantics?
+
+If Category, Kind, or Type never independently affects computation,
+that tier may be descriptive rather than computational.
