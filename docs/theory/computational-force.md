@@ -155,7 +155,7 @@ The taxonomy remains provisional.
 
 ## Stronger Criterion
 
-Eventually, FieldFrame should not rely on hand-authored rules merely to
+Eventually, Veridic should not rely on hand-authored rules merely to
 make each tier appear useful.
 
 The stronger question is:

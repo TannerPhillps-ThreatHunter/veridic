@@ -1,33 +1,13 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [project]
-name = "fieldframe"
-version = "0.1.0"
-description = "Experimental field-aware semantic DataFrame runtime"
+name = "veridic"
+version = "0.2.0"
+description = "A semantic computation system for meaning-preserving computation"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 
-dependencies = [
-    "polars>=1.0",
-    "pyarrow>=17.0",
-    "pint>=0.24",
-]
+dependencies = []
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=8",
-    "ruff>=0.6",
-    "mypy>=1.11",
-]
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-
-[tool.ruff]
-line-length = 100
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/fieldframe"]
+[tool.veridic]
+runtime = "stdlib-only"
+dependency_policy = "zero-third-party"

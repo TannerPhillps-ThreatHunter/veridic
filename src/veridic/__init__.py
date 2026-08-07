@@ -1,4 +1,4 @@
-"""FieldFrame.
+"""Veridic.
 
 Experimental field-aware semantic DataFrame research runtime.
 """
@@ -7,7 +7,7 @@ from .dimensions import SemanticDimension
 from .domain_law import DomainLaw
 from .domain_laws import DOMAIN_LAWS, build_domain_runtime
 from .errors import (
-    FieldFrameError,
+    VeridicError,
     InvariantViolation,
     SemanticError,
     UndefinedOperation,
@@ -47,7 +47,7 @@ __all__ = [
     "DuplicateClassification",
     "ExecutionResult",
     "Field",
-    "FieldFrameError",
+    "VeridicError",
     "FieldValue",
     "Invariant",
     "InvariantCheck",

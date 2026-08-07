@@ -1,6 +1,6 @@
-import pytest
+from veridic.utilities.testing import raises
 
-from fieldframe.hierarchy import (
+from veridic.hierarchy import (
     Classification,
     ClassificationRegistry,
     DuplicateClassification,
@@ -8,7 +8,7 @@ from fieldframe.hierarchy import (
     UnknownKind,
     UnknownType,
 )
-from fieldframe.taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
+from veridic.taxonomy import DEFAULT_CLASSIFICATION_REGISTRY as REGISTRY
 
 
 def test_complete_classification_path():
@@ -52,7 +52,7 @@ def test_kind_is_category_qualified():
 
 
 def test_type_requires_correct_kind_parent():
-    with pytest.raises(UnknownType):
+    with raises(UnknownType):
         REGISTRY.classify(
             "Temporal",
             "Coordinate",
@@ -61,7 +61,7 @@ def test_type_requires_correct_kind_parent():
 
 
 def test_type_requires_correct_category_lineage():
-    with pytest.raises(UnknownType):
+    with raises(UnknownType):
         REGISTRY.classify(
             "Physical",
             "Measurement",
@@ -70,7 +70,7 @@ def test_type_requires_correct_category_lineage():
 
 
 def test_kind_requires_correct_category_parent():
-    with pytest.raises(UnknownKind):
+    with raises(UnknownKind):
         REGISTRY.classify(
             "Identity",
             "Measurement",
@@ -79,7 +79,7 @@ def test_kind_requires_correct_category_parent():
 
 
 def test_unknown_category_is_rejected():
-    with pytest.raises(UnknownCategory):
+    with raises(UnknownCategory):
         REGISTRY.classify(
             "Imaginary",
             "Measurement",
@@ -90,7 +90,7 @@ def test_unknown_category_is_rejected():
 def test_cannot_register_kind_without_category():
     registry = ClassificationRegistry()
 
-    with pytest.raises(UnknownCategory):
+    with raises(UnknownCategory):
         registry.register_kind(
             "Temporal",
             "Coordinate",
@@ -101,7 +101,7 @@ def test_cannot_register_type_without_kind():
     registry = ClassificationRegistry()
     registry.register_category("Temporal")
 
-    with pytest.raises(UnknownKind):
+    with raises(UnknownKind):
         registry.register_type(
             "Temporal",
             "Coordinate",
@@ -113,7 +113,7 @@ def test_duplicate_category_is_rejected():
     registry = ClassificationRegistry()
     registry.register_category("Temporal")
 
-    with pytest.raises(DuplicateClassification):
+    with raises(DuplicateClassification):
         registry.register_category("Temporal")
 
 
@@ -124,5 +124,5 @@ def test_direct_classification_is_structurally_valid_but_unregistered():
         type="ImpossibleType",
     )
 
-    with pytest.raises(UnknownKind):
+    with raises(UnknownKind):
         REGISTRY.validate(classification)

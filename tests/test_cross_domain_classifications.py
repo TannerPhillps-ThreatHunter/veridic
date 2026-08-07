@@ -1,4 +1,4 @@
-from fieldframe.catalog import (
+from veridic.catalog import (
     BYTE_COUNT,
     DURATION,
     EDGE,

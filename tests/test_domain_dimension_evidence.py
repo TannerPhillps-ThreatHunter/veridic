@@ -1,5 +1,5 @@
-from fieldframe.dimensions import SemanticDimension as D
-from fieldframe.domain_laws import DOMAIN_LAWS
+from veridic.dimensions import SemanticDimension as D
+from veridic.domain_laws import DOMAIN_LAWS
 
 
 def _laws_using(dimension: D) -> set[str]:

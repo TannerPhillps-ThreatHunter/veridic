@@ -1,13 +1,13 @@
-import pytest
+from veridic.utilities.testing import raises
 
-from fieldframe.domain_catalog import (
+from veridic.domain_catalog import (
     POSITION_X_A,
     POSITION_X_B,
     POSITION_Y_A,
 )
-from fieldframe.domain_laws import build_domain_runtime
-from fieldframe.errors import UndefinedOperation
-from fieldframe.vocabulary import Operation, Scale
+from veridic.domain_laws import build_domain_runtime
+from veridic.errors import UndefinedOperation
+from veridic.vocabulary import Operation, Scale
 
 runtime = build_domain_runtime()
 
@@ -41,7 +41,7 @@ def test_role_is_only_difference_between_x_and_y_fields():
 
 
 def test_cross_axis_scalar_subtraction_is_rejected():
-    with pytest.raises(UndefinedOperation):
+    with raises(UndefinedOperation):
         runtime.resolve(
             Operation.SUB,
             POSITION_X_A,

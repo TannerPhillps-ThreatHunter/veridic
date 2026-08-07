@@ -1,7 +1,7 @@
-import pytest
+from veridic.utilities.testing import raises
 
-from fieldframe.errors import UndefinedOperation
-from fieldframe.tier_experiments import (
+from veridic.errors import UndefinedOperation
+from veridic.tier_experiments import (
     COUNTER_A,
     COUNTER_B,
     IPV4_A,
@@ -15,7 +15,7 @@ from fieldframe.tier_experiments import (
     TEMPORAL_B,
     build_tier_experiment_runtime,
 )
-from fieldframe.vocabulary import Operation, Scale
+from veridic.vocabulary import Operation, Scale
 
 runtime = build_tier_experiment_runtime()
 
@@ -122,7 +122,7 @@ def test_type_has_computational_force_for_admission():
 
     assert valid.rule.name == "experiment-address-equality"
 
-    with pytest.raises(UndefinedOperation):
+    with raises(UndefinedOperation):
         runtime.resolve(
             Operation.EQ,
             IPV4_A,

@@ -1,18 +1,18 @@
-from fieldframe.catalog import (
+from veridic.catalog import (
     DURATION,
     TIMESTAMP_END,
     TIMESTAMP_START,
 )
-from fieldframe.domain_catalog import DIMENSIONLESS_SCALAR
-from fieldframe.domain_laws import build_domain_runtime
-from fieldframe.execution import execute
-from fieldframe.field import FieldValue
-from fieldframe.record import SemanticRecord
-from fieldframe.validation import (
+from veridic.domain_catalog import DIMENSIONLESS_SCALAR
+from veridic.domain_laws import build_domain_runtime
+from veridic.execution import execute
+from veridic.field import FieldValue
+from veridic.record import SemanticRecord
+from veridic.validation import (
     validate_field_value,
     validate_record,
 )
-from fieldframe.vocabulary import Operation
+from veridic.vocabulary import Operation
 
 runtime = build_domain_runtime()
 

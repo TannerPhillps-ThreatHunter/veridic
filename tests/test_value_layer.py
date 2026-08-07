@@ -1,9 +1,9 @@
-from fieldframe.catalog import DURATION
-from fieldframe.domain_catalog import DIMENSIONLESS_SCALAR
-from fieldframe.domain_laws import build_domain_runtime
-from fieldframe.execution import execute
-from fieldframe.field import FieldValue
-from fieldframe.vocabulary import Operation
+from veridic.catalog import DURATION
+from veridic.domain_catalog import DIMENSIONLESS_SCALAR
+from veridic.domain_laws import build_domain_runtime
+from veridic.execution import execute
+from veridic.field import FieldValue
+from veridic.vocabulary import Operation
 
 runtime = build_domain_runtime()
 

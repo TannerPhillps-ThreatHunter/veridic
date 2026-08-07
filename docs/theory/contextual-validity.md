@@ -2,7 +2,7 @@
 
 ## Phase 5 Result
 
-FieldFrame now distinguishes three different questions.
+Veridic now distinguishes three different questions.
 
 # 1. Representational Validity
 
@@ -123,7 +123,7 @@ An unresolved invariant cannot be counted as verified.
 
 ---
 
-# FieldFrame Validation States
+# Veridic Validation States
 
 A ValidationReport currently distinguishes:
 
@@ -263,7 +263,7 @@ to hold.
 
 # Central Finding
 
-FieldFrame can now represent a distinction that ordinary dtype checking
+Veridic can now represent a distinction that ordinary dtype checking
 alone cannot express cleanly:
 
     operation is meaningful

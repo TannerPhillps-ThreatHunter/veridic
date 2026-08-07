@@ -1,4 +1,4 @@
-from fieldframe.catalog import (
+from veridic.catalog import (
     BYTE_COUNT,
     DESTINATION_IPV4,
     DURATION,
@@ -8,8 +8,8 @@ from fieldframe.catalog import (
     TIMESTAMP_END,
     TIMESTAMP_START,
 )
-from fieldframe.rules import build_runtime
-from fieldframe.vocabulary import Operation, Scale
+from veridic.rules import build_runtime
+from veridic.vocabulary import Operation, Scale
 
 runtime = build_runtime()
 

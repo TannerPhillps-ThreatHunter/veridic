@@ -1,12 +1,12 @@
-import pytest
+from veridic.utilities.testing import raises
 
-from fieldframe.domain_catalog import (
+from veridic.domain_catalog import (
     TEMPERATURE_C_A,
     TEMPERATURE_C_B,
 )
-from fieldframe.domain_laws import build_domain_runtime
-from fieldframe.errors import UndefinedOperation
-from fieldframe.vocabulary import Operation, Scale
+from veridic.domain_laws import build_domain_runtime
+from veridic.errors import UndefinedOperation
+from veridic.vocabulary import Operation, Scale
 
 runtime = build_domain_runtime()
 
@@ -29,7 +29,7 @@ def test_absolute_celsius_difference_changes_type_and_scale():
 
 
 def test_absolute_celsius_addition_is_not_defined():
-    with pytest.raises(UndefinedOperation):
+    with raises(UndefinedOperation):
         runtime.resolve(
             Operation.ADD,
             TEMPERATURE_C_A,

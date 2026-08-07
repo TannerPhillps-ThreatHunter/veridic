@@ -1,8 +1,8 @@
-# FieldFrame Agent Instructions
+# Veridic Agent Instructions
 
 ## Project Purpose
 
-FieldFrame investigates whether explicit field semantics can provide a
+Veridic investigates whether explicit field semantics can provide a
 general computational layer above conventional DataFrame datatypes.
 
 Do not reduce the project to:
@@ -100,3 +100,43 @@ algebra for:
 
 The objective is to discover the smallest semantic model necessary to
 determine valid operations and result semantics.
+
+# Veridic Purity Doctrine
+
+The Veridic runtime is dependency-zero.
+
+Code under:
+
+    src/veridic/
+
+MUST import only:
+
+1. Python standard library modules;
+2. Veridic modules;
+3. relative modules within Veridic.
+
+Third-party runtime dependencies are prohibited.
+
+External systems may eventually be supported through adapters that remain
+outside the semantic core, but Veridic's meaning, algebra, constraints,
+dimensions, expressions, invariants, graph machinery, serialization,
+testing primitives, and execution model are to be implemented within the
+project.
+
+Utilities are first-class subsystems, not a miscellaneous helper directory.
+
+The current planned utility architecture is:
+
+    utilities/
+        expressions/
+        algebra/
+        constraints/
+        dimensions/
+        graph/
+        properties/
+        serialization/
+        testing
+
+The project should implement only the portions of these domains required
+by Veridic's semantic computation model rather than cloning general-purpose
+third-party libraries.

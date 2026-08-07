@@ -1,7 +1,7 @@
 """Controlled experiments for classification-tier semantics.
 
 These Fields are intentionally synthetic and MUST NOT be treated as
-canonical FieldFrame taxonomy.
+canonical Veridic taxonomy.
 
 They exist to answer one question:
 

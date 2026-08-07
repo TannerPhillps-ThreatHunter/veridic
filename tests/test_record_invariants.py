@@ -1,11 +1,11 @@
-from fieldframe.catalog import (
+from veridic.catalog import (
     DURATION,
     TIMESTAMP_END,
     TIMESTAMP_START,
 )
-from fieldframe.field import FieldValue
-from fieldframe.record import SemanticRecord
-from fieldframe.validation import validate_record
+from veridic.field import FieldValue
+from veridic.record import SemanticRecord
+from veridic.validation import validate_record
 
 
 def make_record(

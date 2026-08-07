@@ -1,15 +1,15 @@
-"""FieldFrame semantic errors."""
+"""Veridic semantic errors."""
 
 
-class FieldFrameError(Exception):
-    """Base exception for FieldFrame."""
+class VeridicError(Exception):
+    """Base exception for Veridic."""
 
 
-class SemanticError(FieldFrameError):
+class SemanticError(VeridicError):
     """An operation has no valid semantic interpretation."""
 
 
-class InvariantViolation(FieldFrameError):
+class InvariantViolation(VeridicError):
     """A Field invariant was violated."""
 
 

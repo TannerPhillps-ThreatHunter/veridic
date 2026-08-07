@@ -1,12 +1,12 @@
-import pytest
+from veridic.utilities.testing import raises
 
-from fieldframe.domain_catalog import (
+from veridic.domain_catalog import (
     DESTINATION_IPV4,
     SOURCE_IPV4,
 )
-from fieldframe.domain_laws import build_domain_runtime
-from fieldframe.errors import UndefinedOperation
-from fieldframe.vocabulary import Operation
+from veridic.domain_laws import build_domain_runtime
+from veridic.errors import UndefinedOperation
+from veridic.vocabulary import Operation
 
 runtime = build_domain_runtime()
 
@@ -22,7 +22,7 @@ def test_ipv4_identity_equality_is_valid():
 
 
 def test_ipv4_arithmetic_remains_undefined():
-    with pytest.raises(UndefinedOperation):
+    with raises(UndefinedOperation):
         runtime.resolve(
             Operation.ADD,
             SOURCE_IPV4,

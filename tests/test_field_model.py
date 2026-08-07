@@ -1,5 +1,5 @@
-from fieldframe.catalog import DURATION, SOURCE_IPV4, TIMESTAMP_START
-from fieldframe.vocabulary import Scale
+from veridic.catalog import DURATION, SOURCE_IPV4, TIMESTAMP_START
+from veridic.vocabulary import Scale
 
 
 def test_classification_is_tiered():

@@ -1,5 +1,5 @@
-from fieldframe.relations import Relation, supports
-from fieldframe.vocabulary import Scale
+from veridic.relations import Relation, supports
+from veridic.vocabulary import Scale
 
 
 def test_nominal_supports_equality_only():

@@ -173,7 +173,7 @@ Value and Invariants remain untested as dynamic execution dimensions.
 
 # Phase 5 — Executable Invariants
 
-FieldFrame now distinguishes:
+Veridic now distinguishes:
 
     Representational Validity
     Semantic Validity

@@ -1,7 +1,7 @@
-from fieldframe.dimensions import SemanticDimension as D
-from fieldframe.rules import build_runtime
-from fieldframe.tier_experiments import build_tier_experiment_runtime
-from fieldframe.vocabulary import Operation
+from veridic.dimensions import SemanticDimension as D
+from veridic.rules import build_runtime
+from veridic.tier_experiments import build_tier_experiment_runtime
+from veridic.vocabulary import Operation
 
 
 def test_timestamp_subtraction_declares_classification_dependencies():

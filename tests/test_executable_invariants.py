@@ -1,6 +1,6 @@
-from fieldframe.catalog import DURATION
-from fieldframe.field import FieldValue
-from fieldframe.validation import validate_field_value
+from veridic.catalog import DURATION
+from veridic.field import FieldValue
+from veridic.validation import validate_field_value
 
 
 def test_non_negative_duration_invariant_passes():
