@@ -150,3 +150,28 @@ datum while remaining epistemically distinct.
 Derived values retain their dependencies and governing semantic rule,
 allowing Veridic to explain why they exist and invalidate them when
 their premises change.
+
+## Data -> Information -> Knowledge
+
+Veridic now distinguishes three semantic layers:
+
+```text
+Data
+    |
+    v
+Information
+    |
+    +-- Assertion
+    |
+    +-- Derivation
+    |
+    v
+Knowledge```
+More precisely:
+
+Knowledge = Information + Warrant
+
+Warrant = Assertion | Derivation
+
+A Proposition may exist without being accepted as Knowledge, and the
+same Proposition may possess multiple independent warrants.
